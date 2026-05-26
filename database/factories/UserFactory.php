@@ -47,7 +47,7 @@ class UserFactory extends Factory
                 'Uruguay',
             ]),
             'profile_photo' => null,
-            'instagram' => null,
+            'eco_username' => null,
             'linkedin' => null,
             'birthdate' => null,
             'preferences' => null,

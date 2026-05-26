@@ -1,7 +1,7 @@
 import { ensureEcho } from './echo.js';
 import { resetAppChromeState } from './ui/appChromeReset.js';
 import { renderCard, heartSvgHtml, flashLikeAnimation } from './social/postCard.js';
-import { mountPostShowMaridajeFlip } from './social/maridajeFlip.js';
+import { mountPostShowEcoAnálisisFlip } from './social/EcoAnálisisFlip.js';
 import {
     renderCommentsTreeHtml,
     setupCommentInteractions,
@@ -65,7 +65,7 @@ export function initPostShow() {
         postShowFlipCleanup?.();
         postShowFlipCleanup = null;
         const article = renderCard(post, { omitInteractionBar: true });
-        postShowFlipCleanup = mountPostShowMaridajeFlip(mount, post, article, {
+        postShowFlipCleanup = mountPostShowEcoAnálisisFlip(mount, post, article, {
             axios,
             postBaseUrl: config.postBaseUrl,
             authUserId: config.authUserId ?? null,

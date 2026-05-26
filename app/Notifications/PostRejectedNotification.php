@@ -46,7 +46,7 @@ class PostRejectedNotification extends Notification implements ShouldQueue
             $labels[] = 'lenguaje ofensivo';
         }
         if (($reasons['irrelevant_content'] ?? false) === true) {
-            $labels[] = 'contenido fuera del contexto gastronómico';
+            $labels[] = 'contenido fuera del contexto sostenible';
         }
         if (($reasons['prompt_injection'] ?? false) === true) {
             $labels[] = 'intento de manipulación del sistema';

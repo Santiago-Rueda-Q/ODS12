@@ -93,7 +93,7 @@
             </div>
 
             <div class="border-t border-white/10 pt-5 space-y-4">
-                <h3 class="text-white text-sm font-semibold">Preferencias gastronómicas</h3>
+                <h3 class="text-white text-sm font-semibold">Preferencias sostenibles</h3>
                 <p class="text-xs text-gray-500 -mt-2">Elige todas las que te representen (aparecen como etiquetas en tu perfil).</p>
 
                 <div class="grid grid-cols-2 gap-3">
@@ -122,14 +122,7 @@
                 <h3 class="text-white text-sm font-semibold">Redes sociales</h3>
                 <p class="text-xs text-gray-500 -mt-2">Solo el usuario (sin @); en LinkedIn puedes pegar la URL del perfil o el slug.</p>
 
-                <div class="grid md:grid-cols-2 gap-4">
-                    <div>
-                        <label for="instagram" class="block text-sm font-medium text-gray-300 mb-1">
-                            <x-ui.icon name="brand-instagram" class="inline h-4 w-4 text-pink-400 mr-1 align-text-bottom" />Instagram
-                        </label>
-                        <input id="instagram" type="text" name="instagram" value="{{ old('instagram', $user->instagram) }}" placeholder="usuario_instagram" class="input" autocomplete="off">
-                        <x-input-error class="mt-2" :messages="$errors->get('instagram')" />
-                    </div>
+                <div class="grid md:grid-cols-1 gap-4">
                     <div>
                         <label for="linkedin" class="block text-sm font-medium text-gray-300 mb-1">
                             <x-ui.icon name="brand-linkedin" class="inline h-4 w-4 text-sky-400 mr-1 align-text-bottom" />LinkedIn

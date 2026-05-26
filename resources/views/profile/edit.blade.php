@@ -91,18 +91,6 @@
                         @endif
 
                         <div class="mt-3 flex flex-wrap gap-4 justify-center items-center w-full border-t border-white/10 pt-4">
-                            @if ($user->instagram)
-                                <a
-                                    href="https://www.instagram.com/{{ $user->instagram }}/"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    class="flex items-center gap-2 text-pink-400 hover:scale-105 transition"
-                                >
-                                    <x-ui.icon name="brand-instagram" class="h-5 w-5 shrink-0" />
-                                    <span class="text-sm">{{ '@'.$user->instagram }}</span>
-                                </a>
-                            @endif
-
                             @if ($user->linkedin)
                                 <a
                                     href="https://www.linkedin.com/in/{{ $user->linkedin }}/"
@@ -115,9 +103,9 @@
                                 </a>
                             @endif
 
-                            @if (! $user->instagram && ! $user->linkedin)
+                            @if (! $user->linkedin)
                                 <p class="text-xs text-gray-500 leading-snug max-w-[220px]">
-                                    Añade Instagram o LinkedIn en el formulario para mostrar enlaces aquí.
+                                    Añade LinkedIn en el formulario para mostrar enlaces aquí.
                                 </p>
                             @endif
                         </div>
@@ -279,7 +267,7 @@
 
                         <div class="border-t border-white/10 pt-5 space-y-4">
                             <h3 class="text-white text-sm font-semibold">
-                                Preferencias gastronómicas
+                                Preferencias sostenibles
                             </h3>
                             <p class="text-xs text-gray-500 -mt-2">
                                 Elige todas las que te representen (aparecen como etiquetas en tu perfil).
@@ -315,24 +303,7 @@
                                 Solo el usuario (sin @); en LinkedIn puedes pegar la URL del perfil o el slug.
                             </p>
 
-                            <div class="grid md:grid-cols-2 gap-4">
-                                <div>
-                                    <label for="instagram" class="inline-flex items-center gap-1.5 text-sm font-medium text-gray-300 mb-1">
-                                        <x-ui.icon name="brand-instagram" class="h-4 w-4 text-pink-400 shrink-0" />
-                                        Instagram
-                                    </label>
-                                    <input
-                                        id="instagram"
-                                        type="text"
-                                        name="instagram"
-                                        value="{{ old('instagram', $user->instagram) }}"
-                                        placeholder="usuario_instagram"
-                                        class="input"
-                                        autocomplete="off"
-                                    >
-                                    <x-input-error class="mt-2" :messages="$errors->get('instagram')" />
-                                </div>
-
+                            <div class="grid md:grid-cols-1 gap-4">
                                 <div>
                                     <label for="linkedin" class="inline-flex items-center gap-1.5 text-sm font-medium text-gray-300 mb-1">
                                         <x-ui.icon name="brand-linkedin" class="h-4 w-4 text-sky-400 shrink-0" />

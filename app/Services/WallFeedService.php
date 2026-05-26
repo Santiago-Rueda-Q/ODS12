@@ -36,27 +36,11 @@ class WallFeedService
     }
 
     /**
-     * Extrae el score numérico del JSON ai_analysis según driver SQL (tests SQLite / prod MySQL).
+     * Engagement del feed + refuerzo por eco_score (likes + comentarios + eco_score*2).
      */
-    public static function aiAnalysisScoreSql(): string
+    public static function engagementWithEcoScoreExpression(): string
     {
-        if (! self::postColumnExists('ai_analysis')) {
-            return '0';
-        }
-
-        return match (DB::connection()->getDriverName()) {
-            'sqlite' => 'CAST(json_extract(posts.ai_analysis, \'$.score\') AS INTEGER)',
-            'pgsql' => '(CASE WHEN posts.ai_analysis IS NULL THEN NULL ELSE (posts.ai_analysis::jsonb->>\'score\')::integer END)',
-            default => '(CASE WHEN posts.ai_analysis IS NULL THEN NULL ELSE CAST(NULLIF(JSON_UNQUOTE(JSON_EXTRACT(posts.ai_analysis, \'$.score\')), \'\') AS UNSIGNED) END)',
-        };
-    }
-
-    /**
-     * Engagement del feed + refuerzo por score IA (likes + score*2 como peso adicional).
-     */
-    public static function engagementWithMaridajeExpression(): string
-    {
-        return '('.self::engagementScoreExpression().' + COALESCE('.self::aiAnalysisScoreSql().', 0) * 2)';
+        return '('.self::engagementScoreExpression().' + COALESCE(posts.eco_score, 0) * 2)';
     }
 
     public function respond(FilterPostsRequest $request): JsonResponse
@@ -139,7 +123,7 @@ class WallFeedService
             $popPosts->whereNotIn('posts.id', $excludeIds);
         }
         $popPosts
-            ->orderByRaw(self::engagementWithMaridajeExpression().' DESC')
+            ->orderByRaw(self::engagementWithEcoScoreExpression().' DESC')
             ->orderByDesc('posts.created_at');
         $popChunk = $popPosts->offset(($page - 1) * $nPop)->limit($nPop)->get();
 
@@ -239,7 +223,7 @@ class WallFeedService
     private function baseQuery(): Builder
     {
         $columns = self::POST_COLUMNS;
-        foreach (['content', 'food', 'drink', 'ai_analysis', 'status', 'analysis_status', 'analysis_result', 'moderation_reason'] as $optional) {
+        foreach (['content', 'impacto_estimado', 'eco_score', 'eco_analysis', 'status', 'analysis_status', 'analysis_result', 'moderation_reason'] as $optional) {
             if (self::postColumnExists($optional)) {
                 $columns[] = 'posts.'.$optional;
             }
@@ -329,11 +313,11 @@ class WallFeedService
     {
         match ($sort) {
             'popular' => $query
-                ->orderByRaw(self::engagementWithMaridajeExpression().' DESC')
+                ->orderByRaw(self::engagementWithEcoScoreExpression().' DESC')
                 ->orderByDesc('posts.created_at'),
             'trending' => $query
                 ->where('posts.created_at', '>=', now()->subDays(30))
-                ->orderByRaw(self::engagementWithMaridajeExpression().' DESC')
+                ->orderByRaw(self::engagementWithEcoScoreExpression().' DESC')
                 ->orderByDesc('posts.created_at'),
             default => $query->latest('posts.created_at'),
         };

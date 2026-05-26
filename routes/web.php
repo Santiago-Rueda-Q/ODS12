@@ -79,7 +79,7 @@ Route::get('/posts/{post}/reanalyze', function (Post $post) {
 });
 
 Route::post('/posts/{post}/reanalyze', [PostController::class, 'reanalyze'])
-    ->middleware(['auth', 'throttle:maridaje-reanalyze'])
+    ->middleware(['auth', 'throttle:eco-reanalyze'])
     ->name('posts.reanalyze');
 
 Route::post('/posts', [PostController::class, 'store'])

@@ -29,16 +29,7 @@ class ProfileUpdateRequest extends FormRequest
         $data = [];
         $input = $this->all();
 
-        if (array_key_exists('instagram', $input)) {
-            $instagram = $this->input('instagram');
-            if (is_string($instagram)) {
-                $instagram = ltrim(trim($instagram), '@/');
-                $instagram = $instagram !== '' ? $instagram : null;
-            } else {
-                $instagram = null;
-            }
-            $data['instagram'] = $instagram;
-        }
+
 
         if (array_key_exists('linkedin', $input)) {
             $linkedin = $this->input('linkedin');
@@ -102,7 +93,6 @@ class ProfileUpdateRequest extends FormRequest
             ],
             'country' => ['required', 'string', Rule::in(self::COUNTRIES)],
             'description' => ['nullable', 'string', 'max:500'],
-            'instagram' => ['nullable', 'string', 'max:100', 'regex:/^[a-zA-Z0-9._]{1,100}$/'],
             'linkedin' => ['nullable', 'string', 'max:100', 'regex:/^[a-zA-Z0-9\-]{3,100}$/'],
             'birthdate' => ['nullable', 'date', 'before:today'],
             'preferences' => ['nullable', 'array'],
@@ -153,7 +143,6 @@ class ProfileUpdateRequest extends FormRequest
             'country.required' => 'Debes seleccionar un país.',
             'country.in' => 'Selecciona un país válido de la lista.',
             'description.max' => 'La descripción no puede superar los 500 caracteres.',
-            'instagram.regex' => 'El usuario de Instagram solo puede incluir letras, números, puntos y guiones bajos.',
             'linkedin.regex' => 'El perfil de LinkedIn debe ser un slug válido (letras, números y guiones).',
             'birthdate.before' => 'La fecha de nacimiento debe ser anterior a hoy.',
             'preferences.*.in' => 'Hay una preferencia no válida.',

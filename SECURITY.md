@@ -43,7 +43,7 @@ El comportamiento del feed (orden, límites de lectura) es servidor-side; el cli
 | `profile-posts-json` | 120/min | usuario o IP | `GET /users/{username}/posts` |
 | `username-check` | 30/min | usuario o IP | disponibilidad de username |
 | `settings-write` | 25/min | usuario | PATCH/DELETE perfil |
-| `maridaje-reanalyze` | 8/min | usuario | `POST /posts/{post}/reanalyze` |
+| `EcoAnálisis-reanalyze` | 8/min | usuario | `POST /posts/{post}/reanalyze` |
 
 Variables sensibles: [.env.production.example](.env.production.example); checklist: [PRODUCTION.md](PRODUCTION.md).
 

@@ -11,14 +11,14 @@
 
 @php
     $preferenceIcons = [
-        'Amante del vino' => 'glass-water',
-        'Café lover' => 'coffee',
-        'Comida rápida' => 'pizza',
-        'Gastronomía gourmet' => 'utensils',
-        'Street food' => 'sandwich',
-        'Postres' => 'cake',
-        'Comida tradicional' => 'soup',
-        'Explorador culinario' => 'compass',
+        'Reciclaje y residuos'         => 'recycle',
+        'Consumo responsable'          => 'shopping-bag',
+        'Energía renovable'            => 'bolt',
+        'Moda sostenible'              => 'shirt',
+        'Alimentación ecológica'       => 'leaf',
+        'Movilidad sostenible'         => 'bike',
+        'Economía circular'            => 'arrows-right-left',
+        'Activismo ambiental'          => 'globe',
     ];
 @endphp
 
@@ -92,17 +92,7 @@
 
     @if ($showSocialLinks)
         <div class="mt-3 flex flex-wrap gap-4 justify-center items-center w-full border-t border-white/10 pt-4">
-            @if ($user->instagram)
-                <a
-                    href="https://www.instagram.com/{{ $user->instagram }}/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="flex items-center gap-2 text-pink-400 hover:scale-105 transition"
-                >
-                    <x-ui.icon name="brand-instagram" class="h-5 w-5 shrink-0" />
-                    <span class="text-sm">{{ '@'.$user->instagram }}</span>
-                </a>
-            @endif
+
 
             @if ($user->linkedin)
                 <a

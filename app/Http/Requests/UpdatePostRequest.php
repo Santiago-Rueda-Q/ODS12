@@ -27,8 +27,7 @@ class UpdatePostRequest extends FormRequest
         return [
             'title' => ['required', 'string', 'max:150'],
             'description' => ['required', 'string', 'max:12000'],
-            'food' => ['nullable', 'string', 'max:120'],
-            'drink' => ['nullable', 'string', 'max:120'],
+            'impacto_estimado' => ['nullable', 'string', 'max:200'],
             'tags' => ['required', 'array', 'min:1'],
             'tags.*' => ['required', 'integer', 'exists:tags,id'],
         ];

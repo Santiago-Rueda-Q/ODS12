@@ -1,4 +1,4 @@
-<x-app-layout title="Entre Sabores — Muro de maridajes">
+<x-app-layout title="EcoShare — Muro Sostenible">
     <textarea id="wall-config" class="sr-only" readonly tabindex="-1" aria-hidden="true">@json($wallConfig)</textarea>
 
     <div id="wall-toast-root" class="fixed top-20 left-1/2 z-[60] flex -translate-x-1/2 flex-col gap-2 pointer-events-none px-4 w-full max-w-md" aria-live="polite"></div>
@@ -304,7 +304,7 @@
                                 role="textbox"
                                 aria-multiline="true"
                                 aria-label="Descripción"
-                                data-placeholder="Describe el plato, la bebida o la experiencia que quieres compartir"
+                                data-placeholder="Describe el plato, la impacto o la experiencia que quieres compartir"
                                 class="create-post-ce create-post-ce--body ce-empty min-h-[6.5rem] text-[15px] leading-relaxed text-zinc-300 outline-none focus-visible:ring-2 focus-visible:ring-emerald-500/35 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-950 rounded-xl"
                             ></div>
 

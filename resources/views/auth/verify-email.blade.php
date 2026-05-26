@@ -1,4 +1,4 @@
-<x-guest-layout title="Verificar correo | Entre Sabores">
+<x-guest-layout title="Verificar correo | EcoShare">
     <div class="mb-8">
         <h1 class="text-3xl font-extrabold text-white leading-tight">
             Verifica tu correo electrónico

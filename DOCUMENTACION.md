@@ -1,4 +1,4 @@
-# Documentación técnica — Entre Sabores
+# Documentación técnica — EcoShare
 
 Documento orientado a desarrolladores y evaluación académica. Describe el estado **real** del sistema en el repositorio (Laravel, Blade, colas, IA, Docker).
 
@@ -11,8 +11,8 @@ Documento orientado a desarrolladores y evaluación académica. Describe el esta
 | **DOCUMENTACION.md** (este) | Visión integral: arquitectura, flujo IA → BD → frontend, colas, modelo `posts.ai_analysis`, broadcasting. |
 | [README.md](README.md) | Stack, puesta en marcha, índice de docs, feed (tabla resumen). |
 | [ARCHITECTURE.md](ARCHITECTURE.md) | WallFeedService, FYP/Siguiendo, `sort`, mixto 70/30, rutas, IA en una sección, tiempo real. |
-| [BACKEND.md](BACKEND.md) | Controladores, requests, `MaridajeAiAnalysisService`, jobs, policies, broadcasting detallado. |
-| [FRONTEND.md](FRONTEND.md) | Vite, módulos `resources/js/ui`, Echo, `wall.js`, maridaje flip, CSP. |
+| [BACKEND.md](BACKEND.md) | Controladores, requests, `EcoAnálisisAiAnalysisService`, jobs, policies, broadcasting detallado. |
+| [FRONTEND.md](FRONTEND.md) | Vite, módulos `resources/js/ui`, Echo, `wall.js`, EcoAnálisis flip, CSP. |
 | [DATABASE.md](DATABASE.md) | Tablas, pivotes, migraciones, `ai_analysis`, índices. |
 | [DOCKER.md](DOCKER.md) | Compose, Supervisor, Reverb, worker de colas, **build de assets en arranque**, variables `DOCKER_*`. |
 | [PRODUCTION.md](PRODUCTION.md) | Checklist despliegue, Redis, colas, salud, métricas, scheduler. |
@@ -26,15 +26,15 @@ Documento orientado a desarrolladores y evaluación académica. Describe el esta
 
 ### Propósito
 
-**Entre Sabores** es una plataforma tipo red social donde los usuarios publican **maridajes**: combinaciones de comida y bebida descritas en texto (y opcionalmente imagen), enmarcadas en **experiencias culturales** y personales. El proyecto surge en el contexto COIL entre México y Colombia, priorizando intercambio cultural además de contenido gastronómico.
+**EcoShare** es una plataforma tipo red social donde los usuarios publican **EcoAnálisiss**: combinaciones de práctica y impacto descritas en texto (y opcionalmente imagen), enmarcadas en **experiencias culturales** y personales. El proyecto surge en el contexto COIL entre México y Colombia, priorizando intercambio cultural además de contenido sostenible.
 
 ### Problema que resuelve
 
-Centraliza la creación, descubrimiento e interacción (likes, comentarios, feed con variantes de ordenación) alrededor de relatos de maridaje. Un diferenciador técnico es el **análisis asistido por IA** del texto del usuario: resume maridaje en dimensiones estructuradas y una **puntuación**, persistidas en servidor para no repetir llamadas costosas ni exponer claves al cliente.
+Centraliza la creación, descubrimiento e interacción (likes, comentarios, feed con variantes de ordenación) alrededor de relatos de EcoAnálisis. Un diferenciador técnico es el **análisis asistido por IA** del texto del usuario: resume EcoAnálisis en dimensiones estructuradas y una **puntuación**, persistidas en servidor para no repetir llamadas costosas ni exponer claves al cliente.
 
 ### Enfoque cultural y tecnológico
 
-- **Cultural:** descripciones libres, etiquetas de catálogo (país, tipo de comida, bebida, experiencia) y perfiles con preferencias.
+- **Cultural:** descripciones libres, etiquetas de catálogo (país, tipo de práctica, impacto, experiencia) y perfiles con preferencias.
 - **Tecnológico:** backend monolítico Laravel; UI con Blade + Tailwind + módulos JavaScript; persistencia relacional; colas para IA; **WebSockets (Reverb / compatible Pusher)** para notificar al cliente cuando el análisis está listo.
 
 ---
@@ -43,7 +43,7 @@ Centraliza la creación, descubrimiento e interacción (likes, comentarios, feed
 
 ### Descripción
 
-El sistema sigue el patrón **MVC** de Laravel: controladores delgados, **Form Requests** de validación, **Policies** de autorización, **Eloquent** para acceso a datos. La generación de análisis **no** se ejecuta en la petición HTTP de creación del post: se **encola** un `Job` que invoca un **servicio HTTP** (`MaridajeAiAnalysisService`) contra una API estilo **OpenAI** (`POST …/chat/completions`). El resultado se guarda en **`posts.ai_analysis`** (JSON). Opcionalmente se **broadcast** un evento para actualizar la UI sin polling.
+El sistema sigue el patrón **MVC** de Laravel: controladores delgados, **Form Requests** de validación, **Policies** de autorización, **Eloquent** para acceso a datos. La generación de análisis **no** se ejecuta en la petición HTTP de creación del post: se **encola** un `Job` que invoca un **servicio HTTP** (`EcoAnálisisAiAnalysisService`) contra una API estilo **OpenAI** (`POST …/chat/completions`). El resultado se guarda en **`posts.ai_analysis`** (JSON). Opcionalmente se **broadcast** un evento para actualizar la UI sin polling.
 
 ### Diagrama lógico (texto)
 
@@ -55,14 +55,14 @@ El sistema sigue el patrón **MVC** de Laravel: controladores delgados, **Form R
     │  Transacción: insert post, sync tags(pivot), dispatch Job tras commit
     ▼
 [Queue worker] — GeneratePostAnalysisJob
-    │  Lee Post → llama MaridajeAiAnalysisService → HTTP al proveedor IA
+    │  Lee Post → llama EcoAnálisisAiAnalysisService → HTTP al proveedor IA
     │  Valida payload → persiste ai_analysis → broadcast (si broadcasting ≠ null)
     ▼
 [MySQL] — posts.ai_analysis JSON
     │
 [Echo/Reverb] — canal post.{id}, evento post.analysis.generated
     ▼
-[Cliente] — maridajeFlip.js escucha y repinta el panel de análisis
+[Cliente] — EcoAnálisisFlip.js escucha y repinta el panel de análisis
 ```
 
 ### Relación entre componentes
@@ -71,9 +71,9 @@ El sistema sigue el patrón **MVC** de Laravel: controladores delgados, **Form R
 |------------|-----|
 | `PostController::store` | Crea post, sincroniza etiquetas, despacha `GeneratePostAnalysisJob::dispatch(...)->afterCommit()`. |
 | `GeneratePostAnalysisJob` | Implementa `ShouldQueue`; orquesta llamada al servicio, validación, persistencia y broadcast. |
-| `MaridajeAiAnalysisService` | Único punto de integración HTTP con el proveedor; normaliza JSON; sin claves en frontend. |
+| `EcoAnálisisAiAnalysisService` | Único punto de integración HTTP con el proveedor; normaliza JSON; sin claves en frontend. |
 | `PostAnalysisGeneratedBroadcast` | Evento `ShouldBroadcast` en canal público `post.{postId}`. |
-| `resources/js/social/maridajeFlip.js` | Flip card «publicación / análisis»; suscripción Echo; estado de carga y fallback visual. |
+| `resources/js/social/EcoAnálisisFlip.js` | Flip card «publicación / análisis»; suscripción Echo; estado de carga y fallback visual. |
 
 ---
 
@@ -83,7 +83,7 @@ El sistema sigue el patrón **MVC** de Laravel: controladores delgados, **Form R
 2. **Backend** autoriza `create`, guarda `posts` (`title`, `description`, `image_path`), **asocia etiquetas** en la tabla pivot `post_tag` (`sync`).
 3. **Tras commit** de BD se encola **`GeneratePostAnalysisJob`** con el `id` del post (`afterCommit()` evita jobs huérfanos si falla la transacción).
 4. **Worker** ejecuta el job: carga el `Post`. Si **`ai_analysis` ya no es null**, sale sin llamar a la IA (**idempotencia** ante condiciones de carrera).
-5. **`MaridajeAiAnalysisService::analyzeDescription`** envía la **descripción** (preprocesada: sin HTML, longitud limitada, máximo ~1500 caracteres al prompt) al endpoint **`{base_url}/chat/completions`** con `response_format: json_object`.
+5. **`EcoAnálisisAiAnalysisService::analyzeDescription`** envía la **descripción** (preprocesada: sin HTML, longitud limitada, máximo ~1500 caracteres al prompt) al endpoint **`{base_url}/chat/completions`** con `response_format: json_object`.
 6. **Normalización:** el servicio exige campos no vacíos y acota `score` entre 1 y 10. Si algo falla, devuelve `null`.
 7. **Job:** Si la respuesta es válida según `isValidAnalysisPayload` (claves `historia`, `afinidad`, `equilibrio`, `recomendacion`, `score` con tipos esperados), guarda el JSON en **`posts.ai_analysis`**. Si no, persiste un **fallback** documentado (mensaje genérico, `score: 0`).
 8. **Broadcast:** Si el driver de broadcasting no es `null`, emite **`PostAnalysisGeneratedBroadcast`**.
@@ -91,7 +91,7 @@ El sistema sigue el patrón **MVC** de Laravel: controladores delgados, **Form R
 
 **Reanalizar:** el autor puede `POST /posts/{post}/reanalyze` (política `update`): se pone `ai_analysis` en `null`, se vuelve a encolar el mismo job. Existe `GET` de redirección para evitar 405 por enlaces accidentales.
 
-**Nota:** El prompt de IA usa principalmente el texto de **`description`**. Las **etiquetas** no se envían explícitamente en el cuerpo del request al modelo en `MaridajeAiAnalysisService`; forman parte del contexto del post en BD y del feed.
+**Nota:** El prompt de IA usa principalmente el texto de **`description`**. Las **etiquetas** no se envían explícitamente en el cuerpo del request al modelo en `EcoAnálisisAiAnalysisService`; forman parte del contexto del post en BD y del feed.
 
 ---
 
@@ -99,7 +99,7 @@ El sistema sigue el patrón **MVC** de Laravel: controladores delgados, **Form R
 
 ### Proveedor
 
-Configurable por **variables de entorno** (`config/services.php` → `maridaje_ai`):
+Configurable por **variables de entorno** (`config/services.php` → `EcoAnálisis_ai`):
 
 - `MARIDAJE_AI_API_KEY` — obligatoria para llamadas reales; si falta, el servicio devuelve `null` y el job aplica **fallback**.
 - `MARIDAJE_AI_BASE_URL` — por defecto `https://api.openai.com/v1`; en `.env.example` aparece también ejemplo **DeepSeek** (`https://api.deepseek.com/v1`).
@@ -170,7 +170,7 @@ Tras las migraciones consolidadas, la tabla **`posts`** incluye entre otros:
 |-------|-------------|
 | `id` | Identificador. |
 | `user_id` | Autor (FK usuarios). |
-| `title` | Título del maridaje. |
+| `title` | Título del EcoAnálisis. |
 | `description` | Texto principal (base del análisis IA). |
 | `image_path` | Ruta en disco `public` si hay imagen. |
 | `ai_analysis` | **JSON nullable** — objeto con al menos las claves usadas en UI y ranking: `historia`, `afinidad`, `equilibrio`, `recomendacion`, `score`. |
@@ -186,7 +186,7 @@ Las **etiquetas** no son columnas en `posts`: relación **many-to-many** `posts`
 
 ### Presentación del análisis
 
-- **`maridajeFlip.js`** envuelve la tarjeta del post en un **«flip»**: cara frontal (publicación + estadísticas + botón **Ver análisis**), cara trasera (**Análisis del maridaje** con secciones y puntuación).
+- **`EcoAnálisisFlip.js`** envuelve la tarjeta del post en un **«flip»**: cara frontal (publicación + estadísticas + botón **Ver análisis**), cara trasera (**Análisis del EcoAnálisis** con secciones y puntuación).
 - **`renderAiAnalysisSectionsHtml`** pinta bloques (historia, afinidad, equilibrio, recomendación, score). Si `ai_analysis` es ausente, muestra **spinner** y mensaje de generación en curso.
 - **Score 0** se interpreta en UI como **resultado de respaldo** (banner ámbar y copia explicativa).
 
@@ -218,7 +218,7 @@ Estilos **Tailwind** con grillas y tipografía adaptable; botones con estados fo
 
 ## 9. Buenas prácticas implementadas
 
-- **Separación de responsabilidades:** HTTP del proveedor solo en `MaridajeAiAnalysisService`; orquestación y persistencia en el job; políticas en `PostPolicy`.
+- **Separación de responsabilidades:** HTTP del proveedor solo en `EcoAnálisisAiAnalysisService`; orquestación y persistencia en el job; políticas en `PostPolicy`.
 - **Jobs asíncronos** con reintentos y timeouts acordes a llamadas LLM.
 - **Manejo de errores** por capas (HTTP, parseo, validación de payload) con logs estructurados y fallback explícito.
 - **Secretos solo en servidor** (`MARIDAJE_AI_*`); el frontend nunca llama a la IA.
@@ -231,7 +231,7 @@ Estilos **Tailwind** con grillas y tipografía adaptable; botones con estados fo
 Ideas alineadas con el código actual, sin compromiso de roadmap:
 
 - **Recomendaciones** entre usuarios según etiquetas o similitud de embeddings (requiere diseño de datos y privacidad).
-- **Ranking** más rico combinando engagement + maridaje (ya hay base con `score`).
+- **Ranking** más rico combinando engagement + EcoAnálisis (ya hay base con `score`).
 - **Cache** de feeds o de respuestas IA por hash de descripción (invalidación cuidadosa).
 - **Sistema de seguidores** — ya existe feed «Siguiendo» y mezcla 70/30 documentada en `ARCHITECTURE.md`; podría extenderse con sugerencias.
 - **Analítica** agregada (métricas ya referenciadas en `PRODUCTION.md` / `/internal/metrics`).
@@ -243,10 +243,10 @@ Ideas alineadas con el código actual, sin compromiso de roadmap:
 | Archivo / ruta | Contenido relacionado |
 |----------------|------------------------|
 | `app/Jobs/GeneratePostAnalysisJob.php` | Flujo completo del job y fallback. |
-| `app/Services/MaridajeAiAnalysisService.php` | Prompt, HTTP, normalización. |
+| `app/Services/EcoAnálisisAiAnalysisService.php` | Prompt, HTTP, normalización. |
 | `app/Events/Broadcasting/PostAnalysisGeneratedBroadcast.php` | Contrato WebSocket. |
-| `resources/js/social/maridajeFlip.js` | UX flip + Echo. |
-| `config/services.php` | Claves `maridaje_ai`. |
+| `resources/js/social/EcoAnálisisFlip.js` | UX flip + Echo. |
+| `config/services.php` | Claves `EcoAnálisis_ai`. |
 | `database/migrations/*add_ai_analysis*` | Columna JSON. |
 | `README.md` | Entrada, stack, índice de toda la documentación. |
 | `ARCHITECTURE.md` | Feed, WallFeedService, rutas, broadcasting (resumen). |
@@ -261,4 +261,4 @@ Ideas alineadas con el código actual, sin compromiso de roadmap:
 
 ---
 
-*Última revisión: 2026-05-05 — análisis de maridaje vía cola, JSON en `posts.ai_analysis`, broadcasting opcional.*
+*Última revisión: 2026-05-05 — análisis de EcoAnálisis vía cola, JSON en `posts.ai_analysis`, broadcasting opcional.*

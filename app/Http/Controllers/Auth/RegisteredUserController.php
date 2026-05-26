@@ -29,29 +29,34 @@ class RegisteredUserController extends Controller
     {
         $validated = $request->validated();
 
-        $username = User::generateUniqueUsername(
+        $generatedUsername = User::generateUniqueUsername(
             $validated['first_name'],
-            $validated['last_name'],
-            User::normalizeInstagramHandle($validated['instagram'] ?? null)
+            $validated['last_name']
         );
+        
+        $ecoUsername = !empty($validated['eco_username']) ? Str::slug($validated['eco_username']) : $generatedUsername;
+        
+        // Ensure eco_username is unique if provided manually
+        if (!empty($validated['eco_username']) && User::where('eco_username', $ecoUsername)->exists()) {
+             $ecoUsername = $generatedUsername;
+        }
 
         $photoPath = $profilePhotos->storeFromUploadedFile(
             $request->file('profile_photo'),
-            'profiles/'.$username,
+            'profiles/'.$ecoUsername,
         );
-
-        $instagramProfile = User::normalizeInstagramHandle($validated['instagram'] ?? null);
 
         $user = User::create([
             'first_name' => $validated['first_name'],
             'last_name' => $validated['last_name'],
-            'username' => $username,
+            'username' => $ecoUsername, // Setting username as eco_username for login compatibility
+            'eco_username' => $ecoUsername,
             'email' => $validated['email'],
             'password' => Hash::make($validated['password']),
             'country' => $validated['country'],
             'profile_photo' => $photoPath,
             'description' => $validated['description'] ?? null,
-            'instagram' => $instagramProfile,
+            'linkedin' => $validated['linkedin'] ?? null,
         ]);
 
         event(new Registered($user));

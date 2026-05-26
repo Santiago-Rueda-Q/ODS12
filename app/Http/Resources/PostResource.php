@@ -12,7 +12,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 
 /**
- * Formato único de post para API y serialización embebida en vistas.
+ * Formato único de post para API y serialización emimpacto en vistas.
  *
  * @mixin Post
  */
@@ -33,30 +33,30 @@ class PostResource extends JsonResource
             ? $tags->firstWhere('type', Tag::TYPE_COUNTRY)
             : null;
 
-        $analysis = is_array($this->ai_analysis) ? $this->ai_analysis : null;
+        $ecoAnalysis = is_array($this->eco_analysis) ? $this->eco_analysis : null;
         $analysisStatus = is_string($this->analysis_status) ? $this->analysis_status : Post::ANALYSIS_STATUS_PENDING;
         $analysisResult = is_array($this->analysis_result) ? $this->analysis_result : null;
 
         $base = [
-            'id' => $this->id,
-            'title' => $this->title,
-            'content' => $this->content ?? $this->description,
-            'description' => $this->description,
-            'food' => $this->food,
-            'drink' => $this->drink,
-            'status' => $this->status,
-            'excerpt' => self::makeExcerpt($this->description),
-            'image_url' => $this->image_url,
-            'comments_count' => (int) ($this->comments_count ?? 0),
-            'likes_count' => (int) ($this->likes_count ?? 0),
-            'engagement_score' => ((int) ($this->likes_count ?? 0)) * 2 + ((int) ($this->comments_count ?? 0)) * 3,
-            'liked' => auth()->check() && (bool) data_get($this->resource, 'liked_by_me', false),
-            'created_at' => $this->created_at?->toIso8601String(),
-            'analysis_status' => $analysisStatus,
-            'analysis_result' => $analysisResult,
+            'id'               => $this->id,
+            'title'            => $this->title,
+            'content'          => $this->content ?? $this->description,
+            'description'      => $this->description,
+            'impacto_estimado' => $this->impacto_estimado,
+            'eco_score'        => (int) ($this->eco_score ?? 0),
+            'status'           => $this->status,
+            'excerpt'          => self::makeExcerpt($this->description),
+            'image_url'        => $this->image_url,
+            'comments_count'   => (int) ($this->comments_count ?? 0),
+            'likes_count'      => (int) ($this->likes_count ?? 0),
+            'engagement_score' => ((int) ($this->likes_count ?? 0)) * 2 + ((int) ($this->comments_count ?? 0)) * 3 + ((int) ($this->eco_score ?? 0)) * 2,
+            'liked'            => auth()->check() && (bool) data_get($this->resource, 'liked_by_me', false),
+            'created_at'       => $this->created_at?->toIso8601String(),
+            'analysis_status'  => $analysisStatus,
+            'analysis_result'  => $analysisResult,
             'moderation_reason' => $this->moderation_reason,
-            'ai_analysis' => $this->ai_analysis,
-            'maridaje_highlighted' => self::isMaridajeHighlighted($analysis),
+            'eco_analysis'     => $ecoAnalysis,
+            'eco_highlighted'  => self::isEcoHighlighted($ecoAnalysis),
             'can_edit' => auth()->check() && auth()->id() === (int) $this->user_id,
             'tags' => $tags instanceof Collection
                 ? $tags->map(fn ($t) => [
@@ -95,14 +95,12 @@ class PostResource extends JsonResource
     /**
      * @param  array<string, mixed>|null  $analysis
      */
-    private static function isMaridajeHighlighted(?array $analysis): bool
+    private static function isEcoHighlighted(?array $analysis): bool
     {
         if ($analysis === null) {
             return false;
         }
-
         $score = (int) ($analysis['score'] ?? 0);
-
         return $score >= 8;
     }
 

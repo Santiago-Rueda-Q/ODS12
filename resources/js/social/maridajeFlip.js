@@ -20,7 +20,7 @@ const MARIDAJE_NAV_HINT_HTML = `Puedes alternar entre la publicación y el anál
  *
  * @param {HTMLElement} faceEl
  */
-function measureMaridajeFaceHeight(faceEl) {
+function measureEcoAnálisisFaceHeight(faceEl) {
     if (!faceEl) {
         return 0;
     }
@@ -32,19 +32,19 @@ function measureMaridajeFaceHeight(faceEl) {
 /**
  * Ajusta la altura del contenedor 3D al contenido de la cara visible (evita huecos en el front y compresión en el back).
  *
- * @param {HTMLElement} sceneRoot — [data-maridaje-flip-root]
+ * @param {HTMLElement} sceneRoot — [data-EcoAnálisis-flip-root]
  */
-export function syncMaridajeFlipHeight(sceneRoot) {
-    const inner = sceneRoot.querySelector('.post-maridaje-flip-inner');
-    const front = sceneRoot.querySelector('.post-maridaje-front');
-    const back = sceneRoot.querySelector('.post-maridaje-back');
+export function syncEcoAnálisisFlipHeight(sceneRoot) {
+    const inner = sceneRoot.querySelector('.post-EcoAnálisis-flip-inner');
+    const front = sceneRoot.querySelector('.post-EcoAnálisis-front');
+    const back = sceneRoot.querySelector('.post-EcoAnálisis-back');
     if (!inner || !front || !back) {
         return;
     }
 
-    const flipped = inner.classList.contains('is-maridaje-flipped');
+    const flipped = inner.classList.contains('is-EcoAnálisis-flipped');
     const active = flipped ? back : front;
-    const h = measureMaridajeFaceHeight(active);
+    const h = measureEcoAnálisisFaceHeight(active);
     inner.style.height = `${Math.max(0, h)}px`;
 }
 
@@ -53,12 +53,12 @@ export function syncMaridajeFlipHeight(sceneRoot) {
  *
  * @param {string} statsLeftHtml — HTML de like + comentarios ({@link buildInteractionStatsHtml})
  */
-export function buildMaridajeFrontInteractionBar(statsLeftHtml) {
+export function buildEcoAnálisisFrontInteractionBar(statsLeftHtml) {
     return `
-        <div class="post-maridaje-actions-bar mt-1 flex flex-col gap-2.5 border-t border-slate-700/60 pt-2.5 sm:flex-row sm:items-center sm:justify-between sm:gap-3">
+        <div class="post-EcoAnálisis-actions-bar mt-1 flex flex-col gap-2.5 border-t border-slate-700/60 pt-2.5 sm:flex-row sm:items-center sm:justify-between sm:gap-3">
             <div class="flex min-w-0 flex-wrap items-center gap-5 sm:flex-1">${statsLeftHtml}</div>
             <div class="flex shrink-0 items-center justify-start sm:justify-end">
-                <button type="button" class="maridaje-btn-show-analysis inline-flex cursor-pointer items-center gap-1.5 rounded-full bg-emerald-600/90 px-3 py-1.5 text-xs font-semibold text-white shadow-sm shadow-emerald-900/25 transition-all duration-200 ease-out hover:bg-emerald-500 hover:scale-[1.02] active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400/70">
+                <button type="button" class="EcoAnálisis-btn-show-analysis inline-flex cursor-pointer items-center gap-1.5 rounded-full bg-emerald-600/90 px-3 py-1.5 text-xs font-semibold text-white shadow-sm shadow-emerald-900/25 transition-all duration-200 ease-out hover:bg-emerald-500 hover:scale-[1.02] active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400/70">
                     ${SVG_SPARKLE_CHART}
                     <span>Ver análisis</span>
                 </button>
@@ -71,14 +71,14 @@ export function buildMaridajeFrontInteractionBar(statsLeftHtml) {
  */
 function buildBackToolbarHtml(canReanalyze) {
     return `
-        <div class="maridaje-analysis-toolbar flex shrink-0 flex-wrap items-center justify-between gap-2 border-b border-slate-700/70 px-5 pb-3 pt-4">
-            <button type="button" class="maridaje-btn-back-analysis inline-flex items-center gap-1.5 rounded-full border border-slate-600/80 bg-slate-800/80 px-3 py-1.5 text-xs font-medium text-slate-200 transition hover:bg-slate-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400/60">
+        <div class="EcoAnálisis-analysis-toolbar flex shrink-0 flex-wrap items-center justify-between gap-2 border-b border-slate-700/70 px-5 pb-3 pt-4">
+            <button type="button" class="EcoAnálisis-btn-back-analysis inline-flex items-center gap-1.5 rounded-full border border-slate-600/80 bg-slate-800/80 px-3 py-1.5 text-xs font-medium text-slate-200 transition hover:bg-slate-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400/60">
                 ${SVG_CHEVRON_LEFT}
                 <span>Volver</span>
             </button>
             ${
                 canReanalyze
-                    ? `<button type="button" class="maridaje-btn-reanalyze-analysis inline-flex items-center gap-2 rounded-full bg-violet-600/90 px-3 py-1.5 text-xs font-semibold text-white shadow-sm transition hover:bg-violet-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-400/70">
+                    ? `<button type="button" class="EcoAnálisis-btn-reanalyze-analysis inline-flex items-center gap-2 rounded-full bg-violet-600/90 px-3 py-1.5 text-xs font-semibold text-white shadow-sm transition hover:bg-violet-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-400/70">
                 <span>Analizar de nuevo</span>
             </button>`
                     : ''
@@ -94,7 +94,7 @@ export function renderAiAnalysisSectionsHtml(analysis) {
         return `
             <div class="flex w-full flex-col items-center justify-center gap-4 py-10 px-2">
                 <div class="h-11 w-11 rounded-full border-2 border-emerald-500/25 border-t-emerald-400 animate-spin" aria-hidden="true"></div>
-                <p class="text-center text-sm font-medium text-slate-300 animate-pulse">Generando el análisis de maridaje…</p>
+                <p class="text-center text-sm font-medium text-slate-300 animate-pulse">Generando el análisis de EcoAnálisis…</p>
                 <p class="text-center text-xs text-slate-500 max-w-xs">Cuando esté listo, verás el resultado aquí sin necesidad de recargar la página.</p>
             </div>`;
     }
@@ -144,10 +144,10 @@ export function renderAiAnalysisSectionsHtml(analysis) {
         'space-y-2 rounded-xl border border-slate-700/50 bg-slate-900/40 px-4 py-3.5 sm:px-5';
 
     return `
-        <div class="post-maridaje-ai-body maridaje-ai-enter w-full space-y-6 text-[15px] leading-relaxed text-slate-200 transition-all duration-300 ease-out">
+        <div class="post-EcoAnálisis-ai-body EcoAnálisis-ai-enter w-full space-y-6 text-[15px] leading-relaxed text-slate-200 transition-all duration-300 ease-out">
             <header class="flex items-center gap-2.5 border-b border-slate-700/60 pb-4 text-base font-semibold text-emerald-300">
                 ${SVG_ANALYSIS_HEADING}
-                <span>Análisis del maridaje</span>
+                <span>Análisis del EcoAnálisis</span>
             </header>
             ${fallbackBanner}
             <section class="${blockCls}">
@@ -187,13 +187,13 @@ export function buildWallModalFlipHtml(p) {
     const slotInner = renderAiAnalysisSectionsHtml(p.aiAnalysis);
 
     return `
-        <div data-maridaje-flip-root data-maridaje-post-id="${p.postId}" class="mb-1">
+        <div data-EcoAnálisis-flip-root data-EcoAnálisis-post-id="${p.postId}" class="mb-1">
             <p class="mb-3 text-center text-[11px] leading-relaxed text-slate-500">
                 ${MARIDAJE_NAV_HINT_HTML}
             </p>
-            <div class="post-maridaje-flip-scene rounded-xl ring-1 ring-slate-700/45">
-                <div class="post-maridaje-flip-inner rounded-xl">
-                    <div class="post-maridaje-front rounded-xl border border-slate-700/80 bg-slate-900/60 shadow-inner shadow-black/30 overflow-hidden">
+            <div class="post-EcoAnálisis-flip-scene rounded-xl ring-1 ring-slate-700/45">
+                <div class="post-EcoAnálisis-flip-inner rounded-xl">
+                    <div class="post-EcoAnálisis-front rounded-xl border border-slate-700/80 bg-slate-900/60 shadow-inner shadow-black/30 overflow-hidden">
                         ${p.heroImg}
                         <div class="space-y-3 px-4 py-3">
                             ${p.userHeaderModal}
@@ -205,9 +205,9 @@ export function buildWallModalFlipHtml(p) {
                             ${p.interactionBarHtml}
                         </div>
                     </div>
-                    <div class="post-maridaje-back flex w-full flex-col rounded-xl border border-emerald-900/40 bg-slate-950/95 shadow-inner shadow-black/40">
+                    <div class="post-EcoAnálisis-back flex w-full flex-col rounded-xl border border-emerald-900/40 bg-slate-950/95 shadow-inner shadow-black/40">
                         ${buildBackToolbarHtml(p.canReanalyze)}
-                        <div class="w-full overflow-visible px-5 pb-5 pt-1" data-maridaje-ai-slot>
+                        <div class="w-full overflow-visible px-5 pb-5 pt-1" data-EcoAnálisis-ai-slot>
                             ${slotInner}
                         </div>
                     </div>
@@ -227,15 +227,15 @@ export function buildWallModalFlipHtml(p) {
  *   onNotify?: (message: string, variant?: string) => void
  * }} io
  */
-export function mountPostShowMaridajeFlip(mountEl, post, articleEl, io) {
+export function mountPostShowEcoAnálisisFlip(mountEl, post, articleEl, io) {
     mountEl.innerHTML = '';
 
     const canReanalyze =
         io.authUserId != null && Number(io.authUserId) === Number(post.user?.id ?? NaN);
 
     const root = document.createElement('div');
-    root.dataset.maridajeFlipRoot = '';
-    root.dataset.maridajePostId = String(post.id);
+    root.dataset.EcoAnálisisFlipRoot = '';
+    root.dataset.EcoAnálisisPostId = String(post.id);
     root.className = 'mb-6';
 
     const hint = document.createElement('p');
@@ -243,31 +243,31 @@ export function mountPostShowMaridajeFlip(mountEl, post, articleEl, io) {
     hint.innerHTML = MARIDAJE_NAV_HINT_HTML;
 
     const scene = document.createElement('div');
-    scene.className = 'post-maridaje-flip-scene rounded-xl ring-1 ring-slate-700/45';
+    scene.className = 'post-EcoAnálisis-flip-scene rounded-xl ring-1 ring-slate-700/45';
 
     const inner = document.createElement('div');
-    inner.className = 'post-maridaje-flip-inner rounded-xl';
+    inner.className = 'post-EcoAnálisis-flip-inner rounded-xl';
 
     const front = document.createElement('div');
     front.className =
-        'post-maridaje-front rounded-xl border border-slate-700/80 bg-slate-900/60 shadow-inner shadow-black/30 overflow-hidden';
+        'post-EcoAnálisis-front rounded-xl border border-slate-700/80 bg-slate-900/60 shadow-inner shadow-black/30 overflow-hidden';
 
     articleEl.classList.add('w-full');
     front.appendChild(articleEl);
 
     const toolbarHost = document.createElement('div');
     toolbarHost.className = 'bg-slate-900/55 px-4 pb-4 pt-2';
-    toolbarHost.innerHTML = buildMaridajeFrontInteractionBar(
+    toolbarHost.innerHTML = buildEcoAnálisisFrontInteractionBar(
         buildInteractionStatsHtml(post, { comfortable: true }),
     );
     front.appendChild(toolbarHost);
 
     const back = document.createElement('div');
     back.className =
-        'post-maridaje-back flex w-full flex-col rounded-xl border border-emerald-900/40 bg-slate-950/95 shadow-inner shadow-black/40';
+        'post-EcoAnálisis-back flex w-full flex-col rounded-xl border border-emerald-900/40 bg-slate-950/95 shadow-inner shadow-black/40';
     back.innerHTML =
         buildBackToolbarHtml(canReanalyze) +
-        `<div class="w-full overflow-visible px-5 pb-5 pt-1" data-maridaje-ai-slot>${renderAiAnalysisSectionsHtml(post.ai_analysis ?? null)}</div>`;
+        `<div class="w-full overflow-visible px-5 pb-5 pt-1" data-EcoAnálisis-ai-slot>${renderAiAnalysisSectionsHtml(post.ai_analysis ?? null)}</div>`;
 
     inner.appendChild(front);
     inner.appendChild(back);
@@ -278,7 +278,7 @@ export function mountPostShowMaridajeFlip(mountEl, post, articleEl, io) {
 
     const reanalyzeUrl = `${io.postBaseUrl.replace(/\/$/, '')}/${post.id}/reanalyze`;
 
-    return bindMaridajeFlip(root, {
+    return bindEcoAnálisisFlip(root, {
         postId: Number(post.id),
         axios: io.axios,
         reanalyzeUrl,
@@ -296,19 +296,19 @@ export function mountPostShowMaridajeFlip(mountEl, post, articleEl, io) {
  *   canReanalyze?: boolean,
  *   initialAnalysis?: AiAnalysis|null,
  *   onNotify?: (message: string, variant?: string) => void
- * }} MaridajeFlipOpts
+ * }} EcoAnálisisFlipOpts
  */
 
 /**
- * @param {HTMLElement} sceneRoot — elemento con [data-maridaje-flip-root]
- * @param {MaridajeFlipOpts} opts
+ * @param {HTMLElement} sceneRoot — elemento con [data-EcoAnálisis-flip-root]
+ * @param {EcoAnálisisFlipOpts} opts
  * @returns {() => void}
  */
-export function bindMaridajeFlip(sceneRoot, opts) {
-    const inner = sceneRoot.querySelector('.post-maridaje-flip-inner');
-    const front = sceneRoot.querySelector('.post-maridaje-front');
-    const back = sceneRoot.querySelector('.post-maridaje-back');
-    const slot = sceneRoot.querySelector('[data-maridaje-ai-slot]');
+export function bindEcoAnálisisFlip(sceneRoot, opts) {
+    const inner = sceneRoot.querySelector('.post-EcoAnálisis-flip-inner');
+    const front = sceneRoot.querySelector('.post-EcoAnálisis-front');
+    const back = sceneRoot.querySelector('.post-EcoAnálisis-back');
+    const slot = sceneRoot.querySelector('[data-EcoAnálisis-ai-slot]');
 
     if (!inner || !slot) {
         return () => {};
@@ -319,23 +319,23 @@ export function bindMaridajeFlip(sceneRoot, opts) {
     /** Refuerzo tras fuentes / layout asíncrono */
     function scheduleHeightSync() {
         window.requestAnimationFrame(() => {
-            syncMaridajeFlipHeight(sceneRoot);
-            window.requestAnimationFrame(() => syncMaridajeFlipHeight(sceneRoot));
+            syncEcoAnálisisFlipHeight(sceneRoot);
+            window.requestAnimationFrame(() => syncEcoAnálisisFlipHeight(sceneRoot));
         });
     }
 
     function showFront() {
         if (front) {
-            inner.style.height = `${Math.max(0, measureMaridajeFaceHeight(front))}px`;
+            inner.style.height = `${Math.max(0, measureEcoAnálisisFaceHeight(front))}px`;
         }
-        inner.classList.remove('is-maridaje-flipped');
+        inner.classList.remove('is-EcoAnálisis-flipped');
     }
 
     function showBack() {
         if (back) {
-            inner.style.height = `${Math.max(0, measureMaridajeFaceHeight(back))}px`;
+            inner.style.height = `${Math.max(0, measureEcoAnálisisFaceHeight(back))}px`;
         }
-        inner.classList.add('is-maridaje-flipped');
+        inner.classList.add('is-EcoAnálisis-flipped');
     }
 
     function onWsAnalysis(payload) {
@@ -353,7 +353,7 @@ export function bindMaridajeFlip(sceneRoot, opts) {
 
     /** @param {MouseEvent} e */
     function onRootClick(e) {
-        const showBtn = e.target.closest('.maridaje-btn-show-analysis');
+        const showBtn = e.target.closest('.EcoAnálisis-btn-show-analysis');
         if (showBtn) {
             e.preventDefault();
             e.stopPropagation();
@@ -362,7 +362,7 @@ export function bindMaridajeFlip(sceneRoot, opts) {
             return;
         }
 
-        const backBtn = e.target.closest('.maridaje-btn-back-analysis');
+        const backBtn = e.target.closest('.EcoAnálisis-btn-back-analysis');
         if (backBtn) {
             e.preventDefault();
             e.stopPropagation();
@@ -371,7 +371,7 @@ export function bindMaridajeFlip(sceneRoot, opts) {
             return;
         }
 
-        const reBtn = e.target.closest('.maridaje-btn-reanalyze-analysis');
+        const reBtn = e.target.closest('.EcoAnálisis-btn-reanalyze-analysis');
         if (reBtn && opts.axios && opts.reanalyzeUrl) {
             e.preventDefault();
             e.stopPropagation();
@@ -395,13 +395,13 @@ export function bindMaridajeFlip(sceneRoot, opts) {
 
     scheduleHeightSync();
     if (document.fonts?.ready) {
-        void document.fonts.ready.then(() => syncMaridajeFlipHeight(sceneRoot));
+        void document.fonts.ready.then(() => syncEcoAnálisisFlipHeight(sceneRoot));
     }
 
     /** @type {ResizeObserver | null} */
     let flipResizeObserver = null;
     if (typeof ResizeObserver !== 'undefined' && front && back) {
-        flipResizeObserver = new ResizeObserver(() => syncMaridajeFlipHeight(sceneRoot));
+        flipResizeObserver = new ResizeObserver(() => syncEcoAnálisisFlipHeight(sceneRoot));
         flipResizeObserver.observe(front);
         flipResizeObserver.observe(back);
     }
@@ -409,7 +409,7 @@ export function bindMaridajeFlip(sceneRoot, opts) {
     let resizeDebounce = 0;
     function onWindowResize() {
         window.clearTimeout(resizeDebounce);
-        resizeDebounce = window.setTimeout(() => syncMaridajeFlipHeight(sceneRoot), 120);
+        resizeDebounce = window.setTimeout(() => syncEcoAnálisisFlipHeight(sceneRoot), 120);
     }
     window.addEventListener('resize', onWindowResize, { passive: true });
 
@@ -425,7 +425,7 @@ export function bindMaridajeFlip(sceneRoot, opts) {
 
     return () => {
         sceneRoot.removeEventListener('click', onRootClick);
-        inner.classList.remove('is-maridaje-flipped');
+        inner.classList.remove('is-EcoAnálisis-flipped');
         inner.style.height = '';
         window.removeEventListener('resize', onWindowResize);
         window.clearTimeout(resizeDebounce);

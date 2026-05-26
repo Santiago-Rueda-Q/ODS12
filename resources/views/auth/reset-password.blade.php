@@ -1,4 +1,4 @@
-<x-guest-layout title="Restablecer contraseña | Entre Sabores">
+<x-guest-layout title="Restablecer contraseña | EcoShare">
     <div class="mb-8">
         <h1 class="text-3xl font-extrabold text-white leading-tight">
             Crear nueva contraseña

@@ -2,9 +2,9 @@
 
 ## Introducción
 
-EcoShare es una plataforma de red social enfocada en el **ODS 12 (Producción y Consumo Responsable)** de la ONU. Construida sobre la base técnica del proyecto "Entre Sabores" (Laravel + Vue.js/Inertia), la plataforma permite a usuarios compartir publicaciones sobre temáticas ambientales: reciclaje, economía circular, consumo responsable, reducción de residuos, moda sostenible, energía limpia en el hogar, entre otras.
+EcoShare es una plataforma de red social enfocada en el **ODS 12 (Producción y Consumo Responsable)** de la ONU. Construida sobre la base técnica del proyecto "EcoShare" (Laravel + Vue.js/Inertia), la plataforma permite a usuarios compartir publicaciones sobre temáticas ambientales: reciclaje, economía circular, consumo responsable, reducción de residuos, moda sostenible, energía limpia en el hogar, entre otras.
 
-EcoShare reemplaza el enfoque gastronómico original por uno de impacto ambiental y sostenibilidad, manteniendo las funcionalidades sociales (feed, likes, comentarios, seguidores, notificaciones en tiempo real) y añadiendo análisis de impacto ambiental mediante IA. El despliegue migra de Docker/CapRover a **Vercel** (frontend) con backend Laravel en un servicio compatible (Railway, Render o similar).
+EcoShare reemplaza el enfoque sostenible original por uno de impacto ambiental y sostenibilidad, manteniendo las funcionalidades sociales (feed, likes, comentarios, seguidores, notificaciones en tiempo real) y añadiendo análisis de impacto ambiental mediante IA. El despliegue migra de Docker/CapRover a **Vercel** (frontend) con backend Laravel en un servicio compatible (Railway, Render o similar).
 
 ---
 
@@ -14,7 +14,7 @@ EcoShare reemplaza el enfoque gastronómico original por uno de impacto ambienta
 - **Plataforma**: El sistema EcoShare en su conjunto (backend Laravel + frontend Vue.js/Inertia).
 - **Usuario**: Persona registrada en EcoShare con perfil público.
 - **Publicación**: Contenido creado por un Usuario sobre una temática ODS 12 (texto, imagen opcional, etiquetas).
-- **EcoAnálisis**: Análisis generado por IA que evalúa el impacto ambiental y la relevancia ODS 12 de una Publicación. Equivalente al "maridaje" del proyecto base.
+- **EcoAnálisis**: Análisis generado por IA que evalúa el impacto ambiental y la relevancia ODS 12 de una Publicación. Equivalente al "EcoAnálisis" del proyecto base.
 - **EcoPuntuación**: Valor numérico (1–10) que el EcoAnálisis asigna a una Publicación según su alineación con el ODS 12.
 - **Etiqueta**: Categoría temática asociada a una Publicación (ej: reciclaje, economía circular, residuos, consumo responsable).
 - **Feed**: Listado paginado de Publicaciones mostrado en el muro principal.
@@ -40,7 +40,7 @@ EcoShare reemplaza el enfoque gastronómico original por uno de impacto ambienta
 #### Criterios de Aceptación
 
 1. THE Plataforma SHALL mostrar el nombre "EcoShare" en el título de la aplicación, metaetiquetas HTML y encabezados de página.
-2. THE Plataforma SHALL reemplazar todas las referencias textuales a "Entre Sabores", "maridaje" y terminología gastronómica por equivalentes orientados al ODS 12 en la interfaz de usuario.
+2. THE Plataforma SHALL reemplazar todas las referencias textuales a "EcoShare", "EcoAnálisis" y terminología sostenible por equivalentes orientados al ODS 12 en la interfaz de usuario.
 3. THE Plataforma SHALL mostrar en la página de inicio una descripción del ODS 12 (Producción y Consumo Responsable) y el propósito de la plataforma.
 4. WHEN un Usuario accede a cualquier página pública, THE Plataforma SHALL mostrar metaetiquetas Open Graph con el nombre "EcoShare" y una descripción alineada con el ODS 12.
 
@@ -91,7 +91,7 @@ EcoShare reemplaza el enfoque gastronómico original por uno de impacto ambienta
 4. THE Plataforma SHALL usar la EcoPuntuación en el algoritmo de ranking del Feed para los modos "Populares" y "Tendencia", ponderando `likes_count * 2 + comments_count * 3 + score * 2`.
 5. WHEN el propietario de una Publicación solicita un re-análisis, THE Plataforma SHALL encolar un nuevo EcoAnálisis y responder con confirmación inmediata.
 6. IF el servicio de IA no está disponible o la API key no está configurada, THEN THE Plataforma SHALL registrar una advertencia en los logs y continuar sin EcoAnálisis (la Publicación permanece activa con `analysis_status = failed`).
-7. THE Plataforma SHALL reemplazar el prompt de "sommelier gastronómico" por un prompt de "experto en sostenibilidad y ODS 12" en todas las llamadas al modelo de IA.
+7. THE Plataforma SHALL reemplazar el prompt de "sommelier sostenible" por un prompt de "experto en sostenibilidad y ODS 12" en todas las llamadas al modelo de IA.
 
 ---
 
@@ -154,7 +154,7 @@ EcoShare reemplaza el enfoque gastronómico original por uno de impacto ambienta
 3. WHEN un Usuario actualiza su foto de perfil, THE Plataforma SHALL procesar la imagen en formato WebP y generar variantes de tamaño (miniatura y mediana) para optimizar la carga.
 4. THE Plataforma SHALL permitir al Usuario editar su nombre, apellido, descripción, país y foto de perfil desde la página de configuración de cuenta.
 5. THE Plataforma SHALL eliminar el campo `instagram` como campo de red social principal del perfil, reemplazándolo por un campo opcional `linkedin` para perfiles profesionales de sostenibilidad.
-6. THE Plataforma SHALL reemplazar las preferencias gastronómicas (`PREFERENCE_OPTIONS`) por preferencias de sostenibilidad: `Reciclaje activo`, `Consumo consciente`, `Energía renovable`, `Movilidad sostenible`, `Alimentación plant-based`, `Economía circular`, `Activismo ambiental`, `Educación ecológica`.
+6. THE Plataforma SHALL reemplazar las preferencias sostenibles (`PREFERENCE_OPTIONS`) por preferencias de sostenibilidad: `Reciclaje activo`, `Consumo consciente`, `Energía renovable`, `Movilidad sostenible`, `Alimentación plant-based`, `Economía circular`, `Activismo ambiental`, `Educación ecológica`.
 
 ---
 

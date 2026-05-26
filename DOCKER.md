@@ -1,4 +1,4 @@
-# Entre Sabores — desarrollo con Docker
+# EcoShare — desarrollo con Docker
 
 > **Narrativa IA + colas (contexto producto):** [DOCUMENTACION.md](DOCUMENTACION.md)
 
@@ -127,7 +127,7 @@ Dentro de la red Docker, Laravel usa `DB_HOST=mysql` (fijado en `docker-compose`
 | `reverb` | `php artisan reverb:start` — servidor WebSocket interno (p. ej. puerto 9090). |
 | `queue-worker` | `php artisan queue:work` (usuario `www-data`) — **necesario** si usas colas reales (`QUEUE_CONNECTION=database` o `redis`) para jobs de IA, correo y `ShouldBroadcast`. |
 
-Para que el análisis de maridaje y los broadcasts no se queden en cola sin consumir, en `.env` del contenedor alinea `QUEUE_CONNECTION` (p. ej. `database` con la tabla `jobs` migrada) y comprueba logs: `docker compose logs -f app`.
+Para que el análisis de EcoAnálisis y los broadcasts no se queden en cola sin consumir, en `.env` del contenedor alinea `QUEUE_CONNECTION` (p. ej. `database` con la tabla `jobs` migrada) y comprueba logs: `docker compose logs -f app`.
 
 ## Escalado futuro (referencia)
 

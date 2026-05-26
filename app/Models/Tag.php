@@ -21,18 +21,12 @@ class Tag extends Model
 
     public const TYPE_COUNTRY = 'country';
 
-    public const TYPE_FOOD_TYPE = 'food_type';
-
-    public const TYPE_EXPERIENCE = 'experience';
-
-    public const TYPE_DRINK = 'drink';
+    public const TYPE_ODS12 = 'ods12';
 
     /** @var list<string> */
     public const TYPES = [
         self::TYPE_COUNTRY,
-        self::TYPE_FOOD_TYPE,
-        self::TYPE_EXPERIENCE,
-        self::TYPE_DRINK,
+        self::TYPE_ODS12,
     ];
 
     protected $fillable = [

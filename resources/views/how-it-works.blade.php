@@ -1,27 +1,27 @@
 @extends('layouts.marketing', ['active' => 'how-it-works'])
 
-@section('title', 'Cómo funciona — Entre Sabores')
+@section('title', 'Cómo funciona — EcoShare')
 
-@section('meta_description', 'Cómo publicar un maridaje, cómo funciona el análisis asistido y cómo ver el resultado en tu publicación.')
+@section('meta_description', 'Cómo publicar un EcoAnálisis, cómo funciona el análisis asistido y cómo ver el resultado en tu publicación.')
 
 @section('content')
     <article class="mx-auto max-w-3xl space-y-10">
         <header class="space-y-4 text-center sm:text-left">
             <p class="text-xs font-semibold uppercase tracking-[0.2em] text-cyan-200/80">Cómo funciona</p>
             <h1 class="text-3xl font-extrabold tracking-tight text-white sm:text-4xl md:text-5xl">
-                Maridajes con contexto y análisis en la misma tarjeta
+                EcoAnálisiss con contexto y análisis en la misma tarjeta
             </h1>
             <p class="text-lg leading-relaxed text-slate-300">
-                Entre Sabores une una publicación tipo red social con un análisis técnico breve generado en segundo plano: tú escribes la experiencia; el sistema la complementa con una lectura estructurada cuando la configuración del servidor lo permite.
+                EcoShare une una publicación tipo red social con un análisis técnico breve generado en segundo plano: tú escribes la experiencia; el sistema la complementa con una lectura estructurada cuando la configuración del servidor lo permite.
             </p>
         </header>
 
         <ol class="relative space-y-8 border-l border-white/15 pl-8 sm:pl-10">
             <li class="relative">
                 <span class="absolute -left-[9px] top-1.5 h-4 w-4 rounded-full border-2 border-emerald-400/80 bg-slate-950 sm:-left-[11px]"></span>
-                <h2 class="text-xl font-bold text-white">Publicas tu maridaje</h2>
+                <h2 class="text-xl font-bold text-white">Publicas tu EcoAnálisis</h2>
                 <p class="mt-2 text-slate-300">
-                    Añades título, descripción y etiquetas (país, tipo de comida, bebida, experiencia). Opcionalmente una imagen. Las etiquetas ayudan a clasificar; el relato en texto es la base del análisis automático.
+                    Añades título, descripción y etiquetas (país, tipo de práctica, impacto, experiencia). Opcionalmente una imagen. Las etiquetas ayudan a clasificar; el relato en texto es la base del análisis automático.
                 </p>
             </li>
             <li class="relative">

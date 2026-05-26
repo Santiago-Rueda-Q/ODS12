@@ -85,7 +85,7 @@ return new class extends Migration
                 ['slug' => 'cafe', 'name' => 'Café', 'sort_order' => 1],
                 ['slug' => 'vino', 'name' => 'Vino', 'sort_order' => 2],
                 ['slug' => 'cerveza', 'name' => 'Cerveza', 'sort_order' => 3],
-                ['slug' => 'bebidas_tradicionales', 'name' => 'Bebidas tradicionales', 'sort_order' => 4],
+                ['slug' => 'impactos_tradicionales', 'name' => 'Bebidas tradicionales', 'sort_order' => 4],
             ],
         ];
 
@@ -192,7 +192,7 @@ return new class extends Migration
                 'cafe' => 'cafe',
                 'vino' => 'vino',
                 'cerveza' => 'cerveza',
-                'tradicional' => 'bebidas_tradicionales',
+                'tradicional' => 'impactos_tradicionales',
                 default => null,
             };
             if ($drinkSlug !== null) {

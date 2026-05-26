@@ -36,15 +36,15 @@ return [
     ],
 
     /*
-    | Análisis de maridaje — API compatible OpenAI (POST {base_url}/chat/completions).
-    | Credenciales solo vía .env (MARIDAJE_AI_*); nunca en código ni en el frontend.
-    | Sin API key el servicio devuelve null; el Job persiste un fallback en posts.ai_analysis.
+    | Análisis Eco (EcoShare ODS12) — API compatible OpenAI.
+    | Credenciales solo vía .env (ECO_ANALYSIS_AI_*); nunca en código ni en el frontend.
+    | Sin API key el servicio devuelve null; el Job persiste un fallback en posts.eco_analysis.
     */
-    'maridaje_ai' => [
-        'api_key' => env('MARIDAJE_AI_API_KEY'),
-        'base_url' => env('MARIDAJE_AI_BASE_URL', 'https://api.openai.com/v1'),
-        'model' => env('MARIDAJE_AI_MODEL', 'gpt-4o-mini'),
-        'timeout' => env('MARIDAJE_AI_TIMEOUT', 90),
+    'eco_analysis_ai' => [
+        'api_key'  => env('ECO_ANALYSIS_AI_API_KEY'),
+        'base_url' => env('ECO_ANALYSIS_AI_BASE_URL', 'https://api.openai.com/v1'),
+        'model'    => env('ECO_ANALYSIS_AI_MODEL', 'gpt-4o-mini'),
+        'timeout'  => env('ECO_ANALYSIS_AI_TIMEOUT', 90),
     ],
 
     'content_moderation_ai' => [

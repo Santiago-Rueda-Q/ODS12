@@ -56,8 +56,7 @@ class PostController extends Controller
             'title' => $validated['title'],
             'description' => $validated['description'],
             'content' => $validated['description'],
-            'food' => $validated['food'] ?? null,
-            'drink' => $validated['drink'] ?? null,
+            'impacto_estimado' => $validated['impacto_estimado'] ?? null,
             'image_path' => $imagePath,
             'status' => Post::STATUS_ACTIVE,
             'analysis_status' => Post::ANALYSIS_STATUS_PENDING,
@@ -71,7 +70,7 @@ class PostController extends Controller
         OperationalLogger::postCreated($post, $request, count($tagIds));
         OperationalMetrics::incrementPostsCreated();
 
-        $this->queueMaridajeAnalysis($post);
+        $this->queueEcoAnalysis($post);
 
         $post->load([
             'user:id,first_name,last_name,username,profile_photo',
@@ -121,8 +120,8 @@ class PostController extends Controller
     {
         $this->authorize('update', $post);
 
-        $this->markMaridajeAnalysisPending($post);
-        $this->queueMaridajeAnalysis($post);
+        $this->markEcoAnalysisPending($post);
+        $this->queueEcoAnalysis($post);
 
         return response()->json([
             'ok' => true,
@@ -140,15 +139,14 @@ class PostController extends Controller
             'title' => (string) $validated['title'],
             'description' => (string) $validated['description'],
             'content' => (string) $validated['description'],
-            'food' => $validated['food'] ?? null,
-            'drink' => $validated['drink'] ?? null,
+            'impacto_estimado' => $validated['impacto_estimado'] ?? null,
         ])->save();
 
         $tagIds = array_values(array_unique($validated['tags']));
         $post->tags()->sync($tagIds);
 
-        $this->markMaridajeAnalysisPending($post);
-        $this->queueMaridajeAnalysis($post);
+        $this->markEcoAnalysisPending($post);
+        $this->queueEcoAnalysis($post);
 
         $post->load([
             'user:id,first_name,last_name,username,profile_photo',
@@ -164,19 +162,20 @@ class PostController extends Controller
     }
 
     /**
-     * Reinicia solo el análisis de maridaje (IA secundaria). El post sigue visible (status active).
+     * Reinicia solo el análisis Eco (IA). El post sigue visible (status active).
      */
-    private function markMaridajeAnalysisPending(Post $post): void
+    private function markEcoAnalysisPending(Post $post): void
     {
         $post->forceFill([
             'analysis_status' => Post::ANALYSIS_STATUS_PENDING,
             'analysis_result' => null,
             'moderation_reason' => null,
-            'ai_analysis' => null,
+            'eco_analysis'    => null,
+            'eco_score'       => 0,
         ])->save();
     }
 
-    private function queueMaridajeAnalysis(Post $post): void
+    private function queueEcoAnalysis(Post $post): void
     {
         GeneratePostAnalysisJob::dispatch($post->id)->afterCommit();
     }

@@ -71,8 +71,8 @@ export function initProfileShareModal() {
         try {
             if (navigator.share) {
                 await navigator.share({
-                    title: 'Perfil de Entre Sabores',
-                    text: 'Mira este perfil en Entre Sabores',
+                    title: 'Perfil de EcoShare',
+                    text: 'Mira este perfil en EcoShare',
                     url: shareUrl,
                 });
 

@@ -17,10 +17,10 @@
             <a href="{{ route('dashboard') }}" class="flex items-center gap-2 shrink-0 min-w-0">
                 <img
                     src="{{ asset('favicon.png') }}"
-                    alt="Logo Entre Sabores"
+                    alt="Logo EcoShare"
                     class="h-6 sm:h-8 w-auto object-contain"
                 >
-                <span class="{{ $navDark ? 'text-white' : 'text-stone-800' }} hidden sm:inline font-semibold text-sm tracking-tight truncate">Entre Sabores</span>
+                <span class="{{ $navDark ? 'text-white' : 'text-stone-800' }} hidden sm:inline font-semibold text-sm tracking-tight truncate">EcoShare</span>
             </a>
         </div>
 

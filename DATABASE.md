@@ -17,9 +17,9 @@
    - `analysis_status` (`pending`, `processing`, `completed`, `failed`)
    - `analysis_result` (json)
    - `moderation_reason` (json nullable)
-   - `ai_analysis` (json de maridaje)
+   - `ai_analysis` (json de EcoAnálisis)
    - `deleted_at` (soft deletes)
-3. **`tags`** — Tipos (país, tipo de comida, experiencia, bebida); `iso_code` en países para banderas (`/public/flags`).
+3. **`tags`** — Tipos (país, tipo de práctica, experiencia, impacto); `iso_code` en países para banderas (`/public/flags`).
 4. **`post_tag`** — N:M; índice en `tag_id` para filtros del feed.
 5. **`comments`** — `parent_id` para hilos.
 6. **`likes`** — Índice compuesto `(user_id, post_id)` para unicidad y consultas.

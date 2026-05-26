@@ -15,7 +15,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
-#[Fillable(['first_name', 'last_name', 'username', 'email', 'password', 'country', 'description', 'profile_photo', 'instagram', 'linkedin', 'birthdate', 'preferences'])]
+#[Fillable(['first_name', 'last_name', 'username', 'eco_username', 'email', 'password', 'country', 'description', 'profile_photo', 'linkedin', 'birthdate', 'preferences'])]
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable
 {
@@ -69,14 +69,14 @@ class User extends Authenticatable
 
     /** @var list<string> */
     public const PREFERENCE_OPTIONS = [
-        'Amante del vino',
-        'Café lover',
-        'Comida rápida',
-        'Gastronomía gourmet',
-        'Street food',
-        'Postres',
-        'Comida tradicional',
-        'Explorador culinario',
+        'Reciclaje activo',
+        'Consumo consciente',
+        'Energía renovable',
+        'Movilidad sostenible',
+        'Alimentación plant-based',
+        'Economía circular',
+        'Activismo ambiental',
+        'Educación ecológica',
     ];
 
     /**
@@ -112,27 +112,25 @@ class User extends Authenticatable
     }
 
     /** @var list<string> */
-    private const CREATIVE_FOODS = [
-        'arepa', 'taco', 'empanada', 'ajiaco', 'tamal', 'ceviche', 'pozole', 'sancocho',
-        'mole', 'paella', 'gazpacho', 'churro', 'torta', 'burrito', 'quesadilla', 'pupusa',
-        'enchilada', 'hallaca', 'asado', 'patacon', 'cazuela', 'horchata',
+    private const SUSTAINABILITY_TERMS = [
+        'recicla', 'circular', 'verde', 'eco', 'sostenible', 'residuo', 'compost', 'reutiliza', 'limpio', 'neutro', 'bioma', 'huella', 'renovable', 'consciente', 'impacto'
     ];
 
     /**
-     * Base creativa para username: primer nombre + comida en español + número.
+     * Base creativa para username: primer nombre + término sostenible + número.
      */
     public static function creativeUsernameBase(string $firstName): string
     {
         $firstToken = trim((string) Str::of($firstName)->explode(' ')->first());
         $namePart = Str::slug($firstToken, '');
-        $food = self::CREATIVE_FOODS[array_rand(self::CREATIVE_FOODS)];
+        $term = self::SUSTAINABILITY_TERMS[array_rand(self::SUSTAINABILITY_TERMS)];
         $salt = (string) random_int(10, 99);
 
-        $raw = $namePart.$food.$salt;
+        $raw = $namePart.$term.$salt;
         $base = Str::slug($raw, '');
 
         if ($base === '') {
-            $base = 'usuario'.self::CREATIVE_FOODS[array_rand(self::CREATIVE_FOODS)].(string) random_int(10, 99);
+            $base = 'usuario'.self::SUSTAINABILITY_TERMS[array_rand(self::SUSTAINABILITY_TERMS)].(string) random_int(10, 99);
         }
 
         if (strlen($base) > 24) {
@@ -143,20 +141,14 @@ class User extends Authenticatable
     }
 
     /**
-     * Genera un username único (minúsculas, slug): prioriza Instagram si viene informado;
-     * si no, usa primer nombre + comida + número para un alias divertido.
+     * Genera un eco_username único (minúsculas, slug).
      */
-    public static function generateUniqueUsername(string $firstName, string $lastName, ?string $instagramHandle = null): string
+    public static function generateUniqueUsername(string $firstName, string $lastName, ?string $linkedinHandle = null): string
     {
-        // $lastName se mantiene por compatibilidad (registro/factory) aunque no se use para el fallback creativo.
+        // $lastName se mantiene por compatibilidad aunque no se use para el fallback creativo.
         unset($lastName);
-        $instagramHandle = self::normalizeInstagramHandle($instagramHandle);
 
-        if ($instagramHandle !== null) {
-            $base = Str::slug($instagramHandle, '');
-        } else {
-            $base = self::creativeUsernameBase($firstName);
-        }
+        $base = self::creativeUsernameBase($firstName);
 
         if ($base === '') {
             $base = 'user';
@@ -166,7 +158,7 @@ class User extends Authenticatable
         $original = $username;
         $count = 1;
 
-        while (static::query()->where('username', $username)->exists()) {
+        while (static::query()->where('eco_username', $username)->exists() || static::query()->where('username', $username)->exists()) {
             $username = $original.$count;
             $count++;
         }

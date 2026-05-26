@@ -39,7 +39,7 @@ class AIService
                     'model' => $model,
                     'temperature' => 0,
                     'messages' => [
-                        ['role' => 'system', 'content' => 'Eres un motor de moderación estricto para una red social gastronómica. Responde solo JSON válido.'],
+                        ['role' => 'system', 'content' => 'Eres un motor de moderación estricto para una red social sostenible. Responde solo JSON válido.'],
                         ['role' => 'user', 'content' => $prompt],
                     ],
                 ])
@@ -66,7 +66,7 @@ class AIService
         $drink = trim((string) ($post->drink ?? ''));
 
         return <<<PROMPT
-Actúa como un sistema de moderación de contenido para una plataforma social enfocada en gastronomía y experiencias culturales llamada "Entre Sabores".
+Actúa como un sistema de moderación de contenido para una plataforma social enfocada en sostenibilidad y experiencias culturales llamada "EcoShare".
 
 Debes evaluar estrictamente:
 1) PROFANITY

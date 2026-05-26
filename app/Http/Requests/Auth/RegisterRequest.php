@@ -33,7 +33,8 @@ class RegisterRequest extends FormRequest
         return [
             'first_name' => ['required', 'string', 'max:50'],
             'last_name' => ['required', 'string', 'max:50'],
-            'instagram' => ['nullable', 'string', 'max:100', 'regex:/^[a-zA-Z0-9._]{0,100}$/'],
+            'eco_username' => ['nullable', 'string', 'max:50', 'regex:/^[a-zA-Z0-9_-]+$/', Rule::unique(User::class, 'eco_username')],
+            'linkedin' => ['nullable', 'string', 'max:100', 'regex:/^[a-zA-Z0-9.-]+$/'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', Rule::unique(User::class, 'email')],
             'password' => ['required', 'confirmed', 'min:8', Password::defaults()],
             'country' => ['required', 'string', Rule::in(self::COUNTRIES)],
@@ -60,7 +61,9 @@ class RegisterRequest extends FormRequest
             'profile_photo.mimes' => 'La foto de perfil debe estar en formato JPG, PNG o WebP.',
             'profile_photo.max' => 'La foto de perfil no puede superar los 2 MB.',
             'description.max' => 'La descripción no puede superar los 500 caracteres.',
-            'instagram.regex' => 'El usuario de Instagram solo puede incluir letras, números, puntos y guiones bajos.',
+            'linkedin.regex' => 'El usuario de LinkedIn solo puede incluir letras, números, puntos y guiones.',
+            'eco_username.regex' => 'El nombre de usuario solo puede incluir letras, números, guiones y guiones bajos.',
+            'eco_username.unique' => 'Este nombre de usuario ya está en uso.',
         ];
     }
 }

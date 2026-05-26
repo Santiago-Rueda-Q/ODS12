@@ -44,7 +44,7 @@ class PostSeeder extends Seeder
                     $t(Tag::TYPE_COUNTRY, 'colombia'),
                     $t(Tag::TYPE_FOOD_TYPE, 'salado'),
                     $t(Tag::TYPE_EXPERIENCE, 'callejero'),
-                    $t(Tag::TYPE_DRINK, 'bebidas-tradicionales'),
+                    $t(Tag::TYPE_DRINK, 'impactos-tradicionales'),
                 ]),
                 'title' => 'Aguardiente y empanadas santandereanas',
                 'description' => "El contraste entre el anís del aguardiente antioqueño y la sal de las empanadas de pipián crea un puente sorprendente: primero frescura anisada, luego umami de la carne cocida lentamente.\n\nSirve el aguardiente muy frío y las empanadas recién horneadas.",
@@ -64,7 +64,7 @@ class PostSeeder extends Seeder
                     $t(Tag::TYPE_COUNTRY, 'mexico'),
                     $t(Tag::TYPE_FOOD_TYPE, 'salado'),
                     $t(Tag::TYPE_EXPERIENCE, 'gourmet'),
-                    $t(Tag::TYPE_DRINK, 'bebidas-tradicionales'),
+                    $t(Tag::TYPE_DRINK, 'impactos-tradicionales'),
                 ]),
                 'title' => 'Mole negro Oaxaqueño y mezcal joven',
                 'description' => "El mole lleva decenas de ingredientes; el mezcal joven aporta notas herbáneas y ahumadas que dialogan con el chocolate amargo del mole sin dominarlo.\n\nSirve porciones pequeñas: la intensidad es alta y el paladar se fatiga rápido.",
@@ -77,7 +77,7 @@ class PostSeeder extends Seeder
                     $t(Tag::TYPE_DRINK, 'vino'),
                 ]),
                 'title' => 'Malbec y empanadas salteñas',
-                'description' => "Los taninos del malbec cortan la grasa jugosa de la empanada salteña y amplifican las especias del relleno. Temperatura ambiente para el vino y empanadas calientes.\n\nUn maridaje de domingo que nunca falla entre amigos.",
+                'description' => "Los taninos del malbec cortan la grasa jugosa de la empanada salteña y amplifican las especias del relleno. Temperatura ambiente para el vino y empanadas calientes.\n\nUn EcoAnálisis de domingo que nunca falla entre amigos.",
             ],
         ];
 

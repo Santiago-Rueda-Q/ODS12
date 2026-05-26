@@ -4,7 +4,7 @@ namespace App\Jobs;
 
 use App\Events\Broadcasting\PostAnalysisGeneratedBroadcast;
 use App\Models\Post;
-use App\Services\MaridajeAiAnalysisService;
+use App\Services\EcoAnalysisService;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Queue\Queueable;
@@ -29,9 +29,9 @@ class GeneratePostAnalysisJob implements ShouldQueue
         public int $postId,
     ) {}
 
-    public function handle(MaridajeAiAnalysisService $analysisService): void
+    public function handle(EcoAnalysisService $analysisService): void
     {
-        Log::info('maridaje.job.start', [
+        Log::info('EcoAnálisis.job.start', [
             'post_id' => $this->postId,
             'job' => static::class,
         ]);
@@ -39,7 +39,7 @@ class GeneratePostAnalysisJob implements ShouldQueue
         try {
             $post = Post::query()->findOrFail($this->postId);
         } catch (ModelNotFoundException $e) {
-            Log::error('maridaje.job.post_not_found', [
+            Log::error('EcoAnálisis.job.post_not_found', [
                 'post_id' => $this->postId,
                 'message' => $e->getMessage(),
             ]);
@@ -47,7 +47,7 @@ class GeneratePostAnalysisJob implements ShouldQueue
             throw $e;
         }
 
-        Log::info('maridaje.job.post_loaded', [
+        Log::info('EcoAnálisis.job.post_loaded', [
             'post_id' => $post->id,
             'ai_analysis_is_null' => $post->ai_analysis === null,
         ]);
@@ -57,8 +57,8 @@ class GeneratePostAnalysisJob implements ShouldQueue
         ])->save();
 
         // CASO A: ya hay análisis (idempotencia / carrera)
-        if ($post->ai_analysis !== null) {
-            Log::info('maridaje.job.skip_existing_analysis', [
+        if ($post->eco_analysis !== null) {
+            Log::info('EcoAnalysis.job.skip_existing_analysis', [
                 'post_id' => $post->id,
             ]);
 
@@ -72,7 +72,7 @@ class GeneratePostAnalysisJob implements ShouldQueue
             $result = $analysisService->analyzeDescription($post->description);
         } catch (Throwable $e) {
             $serviceException = $e;
-            Log::error('maridaje.job.service_exception', [
+            Log::error('EcoAnálisis.job.service_exception', [
                 'post_id' => $post->id,
                 'message' => $e->getMessage(),
                 'exception' => $e::class,
@@ -93,7 +93,7 @@ class GeneratePostAnalysisJob implements ShouldQueue
         }
 
         if ($result === null) {
-            Log::warning('maridaje.job.service_returned_null', [
+            Log::warning('EcoAnálisis.job.service_returned_null', [
                 'post_id' => $post->id,
                 'hint' => 'Revisar MARIDAJE_AI_*, config:cache, longitud de descripción o respuesta HTTP.',
             ]);
@@ -103,7 +103,7 @@ class GeneratePostAnalysisJob implements ShouldQueue
         }
 
         if (! $this->isValidAnalysisPayload($result)) {
-            Log::error('maridaje.job.invalid_payload', [
+            Log::error('EcoAnálisis.job.invalid_payload', [
                 'post_id' => $post->id,
                 'keys' => array_keys($result),
             ]);
@@ -122,7 +122,7 @@ class GeneratePostAnalysisJob implements ShouldQueue
     private function persistFallback(Post $post, string $reason, ?string $detail = null): void
     {
         $payload = $this->fallbackPayload();
-        Log::warning('maridaje.job applying_fallback', [
+        Log::warning('EcoAnálisis.job applying_fallback', [
             'post_id' => $post->id,
             'reason' => $reason,
             'detail' => $detail,
@@ -130,24 +130,20 @@ class GeneratePostAnalysisJob implements ShouldQueue
         $post->forceFill([
             'analysis_status' => Post::ANALYSIS_STATUS_FAILED,
             'analysis_result' => [
-                'error' => $reason,
-                'detail' => $detail,
-                'fallback' => $payload,
+                'error'     => $reason,
+                'detail'    => $detail,
+                'fallback'  => $payload,
                 'failed_at' => now()->toIso8601String(),
             ],
-            'ai_analysis' => null,
+            'eco_analysis' => null,
         ])->save();
     }
 
-    /**
-     * @return array{historia: string, afinidad: null, equilibrio: null, recomendacion: string, score: int}
-     */
     private function fallbackPayload(): array
     {
         return [
-            'historia' => 'No se pudo generar el análisis en este momento.',
-            'afinidad' => null,
-            'equilibrio' => null,
+            'impacto' => 'No se pudo generar el análisis en este momento.',
+            'alineacion_ods' => 'No disponible',
             'recomendacion' => 'Intenta nuevamente.',
             'score' => 0,
         ];
@@ -158,46 +154,50 @@ class GeneratePostAnalysisJob implements ShouldQueue
      */
     private function persistAnalysis(Post $post, array $analysis, string $source, ?string $fallbackReason = null): void
     {
+        $score = is_numeric($analysis['score'] ?? null) ? (int) round((float) $analysis['score']) : 0;
+        $score = max(0, min(10, $score));
+
         $post->forceFill([
             'analysis_status' => Post::ANALYSIS_STATUS_COMPLETED,
             'analysis_result' => $analysis,
-            'ai_analysis' => $analysis,
+            'eco_analysis'    => $analysis,
+            'eco_score'       => $score,
         ]);
 
         $saved = $post->save();
 
         if (! $saved) {
-            Log::error('maridaje.job.save_failed_false', [
+            Log::error('EcoAnalysis.job.save_failed_false', [
                 'post_id' => $post->id,
-                'source' => $source,
+                'source'  => $source,
             ]);
 
-            throw new \RuntimeException('GeneratePostAnalysisJob: save() devolvió false.');
+            throw new \RuntimeException('GeneratePostAnalysisJob: save() devolveró false.');
         }
 
         $post->refresh();
 
-        if ($post->ai_analysis === null) {
-            Log::error('maridaje.job.save_verify_null', [
+        if ($post->eco_analysis === null) {
+            Log::error('EcoAnalysis.job.save_verify_null', [
                 'post_id' => $post->id,
-                'source' => $source,
+                'source'  => $source,
             ]);
 
-            throw new \RuntimeException('ai_analysis no persistió tras save(); revisar modelo y migración.');
+            throw new \RuntimeException('eco_analysis no persistíó tras save(); revisar modelo y migración.');
         }
 
-        Log::info('maridaje.job.saved', [
-            'post_id' => $post->id,
-            'source' => $source,
+        Log::info('EcoAnalysis.job.saved', [
+            'post_id'        => $post->id,
+            'source'         => $source,
             'fallback_reason' => $fallbackReason,
-            'score' => $analysis['score'] ?? null,
+            'score'          => $score,
         ]);
 
         if (config('broadcasting.default') !== 'null') {
             try {
                 broadcast(new PostAnalysisGeneratedBroadcast($post->id, $analysis));
             } catch (Throwable $broadcastException) {
-                Log::error('maridaje.job.broadcast_failed', [
+                Log::error('EcoAnálisis.job.broadcast_failed', [
                     'post_id' => $post->id,
                     'message' => $broadcastException->getMessage(),
                     'exception' => $broadcastException::class,
@@ -213,7 +213,7 @@ class GeneratePostAnalysisJob implements ShouldQueue
      */
     private function isValidAnalysisPayload(array $result): bool
     {
-        $required = ['historia', 'afinidad', 'equilibrio', 'recomendacion', 'score'];
+        $required = ['impacto', 'alineacion_ods', 'recomendacion', 'score'];
 
         foreach ($required as $key) {
             if (! array_key_exists($key, $result)) {
@@ -221,7 +221,7 @@ class GeneratePostAnalysisJob implements ShouldQueue
             }
         }
 
-        foreach (['historia', 'afinidad', 'equilibrio', 'recomendacion'] as $stringKey) {
+        foreach (['impacto', 'alineacion_ods', 'recomendacion'] as $stringKey) {
             if (! is_string($result[$stringKey])) {
                 return false;
             }
@@ -248,7 +248,7 @@ class GeneratePostAnalysisJob implements ShouldQueue
             ])->save();
         }
 
-        Log::error('maridaje.job.failed_permanent', [
+        Log::error('EcoAnálisis.job.failed_permanent', [
             'post_id' => $this->postId,
             'message' => $exception?->getMessage(),
             'exception' => $exception !== null ? $exception::class : null,

@@ -1,4 +1,4 @@
-<x-guest-layout title="Ingresar | Entre Sabores">
+<x-guest-layout title="Ingresar | EcoShare">
     <div class="mb-8">
         <h1 class="text-4xl font-extrabold text-white leading-tight">
             ¡Bienvenido de nuevo!

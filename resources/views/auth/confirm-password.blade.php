@@ -1,4 +1,4 @@
-<x-guest-layout title="Confirmar contraseña | Entre Sabores">
+<x-guest-layout title="Confirmar contraseña | EcoShare">
     <div class="mb-8">
         <h1 class="text-3xl font-extrabold text-white leading-tight">
             Confirma tu contraseña

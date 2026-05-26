@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Entre Sabores</title>
+    <title>EcoShare</title>
     <link rel="icon" type="image/png" href="{{ asset('favicon.png') }}">
     <style>
         .hero-title {
@@ -42,16 +42,16 @@
 
         <main class="relative z-10 mx-auto flex w-full max-w-[1400px] flex-1 flex-col items-center justify-between gap-10 px-8 pt-10 pb-12 lg:flex-row lg:gap-10 xl:gap-16 lg:py-16">
             <div class="-mt-6 max-w-2xl space-y-5 text-center lg:-mt-10 lg:text-left">
-                <p class="inline-flex rounded-full border border-white/20 bg-white/5 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-cyan-200/90">
-                    COMUNIDAD GASTRONÓMICA GLOBAL
+                <p class="inline-flex rounded-full border border-emerald-500/30 bg-emerald-500/10 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-emerald-300/90">
+                    PRODUCCIÓN Y CONSUMO RESPONSABLE
                 </p>
 
                 <h1 class="hero-title text-5xl font-extrabold leading-tight tracking-wide md:text-6xl xl:text-7xl">
-                    Explora sabores, conecta culturas
+                    Sostenibilidad en acción, impacto real
                 </h1>
 
                 <p class="mx-auto max-w-lg text-lg leading-relaxed text-slate-300 md:text-xl lg:mx-0">
-                    Comparte tus maridajes y descubre experiencias gastronómicas del mundo.
+                    Únete a EcoShare para compartir prácticas sostenibles, reducir residuos y promover la economía circular impulsando el ODS 12.
                 </p>
 
                 <div class="mt-6 flex flex-col items-center gap-6 sm:flex-row lg:items-start">
@@ -67,7 +67,7 @@
             <div class="flex items-center justify-center lg:justify-end">
                 <img
                     src="{{ asset('images/image-hero.png') }}"
-                    alt="Hero Entre Sabores"
+                    alt="Hero EcoShare"
                     class="w-[660px] object-contain drop-shadow-[0_30px_80px_rgba(0,0,0,0.6)] md:w-[730px] xl:w-[880px] 2xl:w-[980px] animate-float"
                 />
             </div>

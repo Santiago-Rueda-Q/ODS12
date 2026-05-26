@@ -18,14 +18,14 @@ Convenciones, puntos de extensión y contratos del feed. **Última revisión:** 
 
 Otros requests destacados: `StorePostRequest`, `StorePostCommentRequest`, `UserPostsRequest`, etc.
 
-## Maridaje IA (servicio y jobs)
+## EcoAnálisis IA (servicio y jobs)
 
 | Pieza | Rol |
 |-------|-----|
 | `config/services.php` / `.env` | Claves `MARIDAJE_AI_*` (URL base, modelo, API key, timeouts, límites de reintentos). |
-| `MaridajeAiAnalysisService` | Llama al proveedor HTTP; devuelve estructura normalizada para guardar en `posts.ai_analysis`. |
+| `EcoAnálisisAiAnalysisService` | Llama al proveedor HTTP; devuelve estructura normalizada para guardar en `posts.ai_analysis`. |
 | `GeneratePostAnalysisJob` | Encola el análisis; al terminar actualiza el post y puede emitir `PostAnalysisGeneratedBroadcast` → WebSocket (`post.analysis.generated`). |
-| `PostController::reanalyze` | `POST /posts/{post}/reanalyze` — solo el dueño; throttle **`maridaje-reanalyze`** (8/min por usuario). |
+| `PostController::reanalyze` | `POST /posts/{post}/reanalyze` — solo el dueño; throttle **`EcoAnálisis-reanalyze`** (8/min por usuario). |
 
 Sin worker de colas activo, los jobs de análisis y los `ShouldBroadcast` no se procesan — ver [DOCKER.md](DOCKER.md#supervisor-un-solo-contenedor-app) y [PRODUCTION.md](PRODUCTION.md#colas).
 
@@ -77,7 +77,7 @@ Ejemplos relevantes al dominio social:
 - Ruta creación: `POST /posts`
 - Ruta edición: `PATCH /posts/{post}` (y `PUT /posts/{post}` compatible)
 - Request de edición: `UpdatePostRequest` (título, descripción, etiquetas y campos opcionales).
-- Tras editar: se invalida análisis previo y se reenfila moderación + maridaje.
+- Tras editar: se invalida análisis previo y se reenfila moderación + EcoAnálisis.
 
 ## Buenas prácticas observadas
 

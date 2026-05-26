@@ -1,4 +1,4 @@
-# Arquitectura — Entre Sabores
+# Arquitectura — EcoShare
 
 > **Guía integral (IA, persistencia, UX):** [DOCUMENTACION.md](DOCUMENTACION.md)
 
@@ -6,7 +6,7 @@ Decisiones técnicas y estructura lógica. **Última revisión documental:** 202
 
 ## Visión
 
-Aplicación web tipo red social gastronómica (COIL México–Colombia): muro con feed, publicaciones con etiquetas, interacciones (likes, comentarios anidados, seguimiento) y perfiles públicos. Autenticación y ajustes de cuenta vía **Laravel Breeze**.
+Aplicación web tipo red social sostenible (COIL México–Colombia): muro con feed, publicaciones con etiquetas, interacciones (likes, comentarios anidados, seguimiento) y perfiles públicos. Autenticación y ajustes de cuenta vía **Laravel Breeze**.
 
 ## Stack
 
@@ -68,7 +68,7 @@ Orden lógico en `respond()`:
 | `sort` | Comportamiento |
 |--------|----------------|
 | `recent` | `latest` por `posts.created_at` (cuando no entra en la rama mixta). |
-| `popular` | Ranking por **engagement + maridaje**: `likes_count * 2 + comments_count * 3` más **`score` del JSON `posts.ai_analysis` × 2** (si no hay análisis, el término IA es 0); desempate `created_at` DESC. |
+| `popular` | Ranking por **engagement + EcoAnálisis**: `likes_count * 2 + comments_count * 3` más **`score` del JSON `posts.ai_analysis` × 2** (si no hay análisis, el término IA es 0); desempate `created_at` DESC. |
 | `trending` | Posts de los **últimos 30 días**, mismo criterio combinado que **Populares**. |
 
 Los contadores vienen de `withCount`; el `score` se extrae del campo JSON con funciones según el driver SQL (MySQL en Docker/prod, SQLite en tests).
@@ -77,7 +77,7 @@ Los contadores vienen de `withCount`; el `score` se extrae del campo JSON con fu
 
 Solo cuando: usuario autenticado, **FYP** (no «Siguiendo»), **`sort=recent`**.
 
-- Con **al menos un seguido**: ~70 % de slots de posts recientes de seguidos + ~30 % de descubrimiento global ordenado por **engagement + maridaje** (misma fórmula que **Populares**). Implementación: dos trozos con offsets por página + fusión; meta `feed_mode`: `mixed_70_30`.
+- Con **al menos un seguido**: ~70 % de slots de posts recientes de seguidos + ~30 % de descubrimiento global ordenado por **engagement + EcoAnálisis** (misma fórmula que **Populares**). Implementación: dos trozos con offsets por página + fusión; meta `feed_mode`: `mixed_70_30`.
 - **Sin seguidos**: lista global reciente (`feed_mode`: `global_recent_no_follows`).
 
 **Limitaciones aceptadas:** paginación por offset en trozos separados (no una única SQL de ranking global); posible ligera irregularidad entre páginas; `has_more` heurístico. Detalle en [PERFORMANCE.md](PERFORMANCE.md).
@@ -90,7 +90,7 @@ Sirve para depuración y tests; valores típicos: `following`, `mixed_70_30`, `g
 
 Exploración global puede cachearse por TTL si `WALL_GUEST_FEED_CACHE_TTL > 0`; la clave incluye `sort`, página y filtros. Usuarios autenticados no usan esta caché de página completa (necesitan estado de like propio).
 
-### API JSON embebida
+### API JSON emimpacto
 
 Las rutas suelen servir Blade con config JS (`wallConfig`, …) usando **rutas relativas** (`route(..., false)`) cuando hace falta coherencia de cookies con el origen real del navegador.
 
@@ -106,7 +106,7 @@ Las rutas suelen servir Blade con config JS (`wallConfig`, …) usando **rutas r
 | `GET /posts/filter` | JSON del feed (throttle `feed-filter`). |
 | `GET /posts/{post}` | Detalle HTML o JSON según `Accept`. |
 | `POST /posts` | Crear publicación (policy + throttle `create-post`). |
-| `POST /posts/{post}/reanalyze` | Reencolar análisis de maridaje (dueño, throttle `maridaje-reanalyze`). |
+| `POST /posts/{post}/reanalyze` | Reencolar análisis de EcoAnálisis (dueño, throttle `EcoAnálisis-reanalyze`). |
 | `GET /posts/{post}/reanalyze` | Redirección segura (evita 405 si se abre como enlace); el cierre real del análisis es vía POST. |
 | `GET /health` | Salud ampliada (DB, caché, cola); token opcional. |
 | `GET /internal/metrics` | Snapshot de métricas operativas; token opcional. |
@@ -116,16 +116,16 @@ Las rutas suelen servir Blade con config JS (`wallConfig`, …) usando **rutas r
 - Por defecto en `.env.example`: `QUEUE_CONNECTION=sync`, `CACHE_STORE=file`; producción suele usar Redis para caché, sesión y colas; en **Docker** de desarrollo es habitual `QUEUE_CONNECTION=database` con **worker en Supervisor** para jobs de IA y broadcasting ([DOCKER.md](DOCKER.md)).
 - Índices en follows, post_tag, likes, posts — ver [DATABASE.md](DATABASE.md).
 
-## Análisis de maridaje (IA)
+## Análisis de EcoAnálisis (IA)
 
 - **Almacenamiento:** columna JSON **`posts.ai_analysis`** (p. ej. `score`, texto explicativo, metadatos según el servicio).
 - **Generación:** job encolado (`GeneratePostAnalysisJob`) tras crear o actualizar un post y cuando el propietario solicita **reanalizar**; al completar con datos válidos se emite **`PostAnalysisGeneratedBroadcast`** (Echo: `post.analysis.generated`). Proveedor configurable (`MARIDAJE_AI_*` en `.env`, p. ej. API compatible OpenAI/DeepSeek); sin API válida el comportamiento depende del job/servicio — ver [BACKEND.md](BACKEND.md).
-- **HTTP:** `POST /posts/{post}/reanalyze` (autenticado, dueño del post, throttle `maridaje-reanalyze`) encola de nuevo el análisis.
-- **Impacto en el feed:** el ranking **Populares**, **Tendencia** y el tramo ~30 % del mixto **70/30** ponderan el `score` del análisis junto al engagement (`WallFeedService::engagementWithMaridajeExpression()`).
+- **HTTP:** `POST /posts/{post}/reanalyze` (autenticado, dueño del post, throttle `EcoAnálisis-reanalyze`) encola de nuevo el análisis.
+- **Impacto en el feed:** el ranking **Populares**, **Tendencia** y el tramo ~30 % del mixto **70/30** ponderan el `score` del análisis junto al engagement (`WallFeedService::engagementWithEcoAnálisisExpression()`).
 
 ## Tiempo real (broadcasting)
 
-Solo donde aporta UX clara: **notificaciones** (badge + toast), **likes**, **comentarios** y **análisis de maridaje listo** en la **vista de detalle de un post**. El feed del muro completo **no** se actualiza por WebSockets (sigue siendo HTTP paginado).
+Solo donde aporta UX clara: **notificaciones** (badge + toast), **likes**, **comentarios** y **análisis de EcoAnálisis listo** en la **vista de detalle de un post**. El feed del muro completo **no** se actualiza por WebSockets (sigue siendo HTTP paginado).
 
 | Canal | Tipo | Uso |
 |-------|------|-----|

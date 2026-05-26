@@ -1,18 +1,18 @@
 @extends('layouts.marketing', ['active' => 'explore'])
 
-@section('title', 'Explorar — Entre Sabores')
+@section('title', 'Explorar — EcoShare')
 
-@section('meta_description', 'Descubre maridajes y experiencias en el muro de Entre Sabores: exploración global, cuentas que sigues y filtros de orden.')
+@section('meta_description', 'Descubre EcoAnálisiss y experiencias en el muro de EcoShare: exploración global, cuentas que sigues y filtros de orden.')
 
 @section('content')
     <article class="mx-auto max-w-3xl space-y-10">
         <header class="space-y-4 text-center sm:text-left">
             <p class="text-xs font-semibold uppercase tracking-[0.2em] text-cyan-200/80">Explorar</p>
             <h1 class="text-3xl font-extrabold tracking-tight text-white sm:text-4xl md:text-5xl">
-                Tu ventana a maridajes y culturas
+                Tu ventana a EcoAnálisiss y culturas
             </h1>
             <p class="text-lg leading-relaxed text-slate-300">
-                En el muro puedes recorrer publicaciones de la comunidad: combinaciones de comida y bebida contadas en primera persona, con etiquetas que sitúan cada experiencia.
+                En el muro puedes recorrer publicaciones de la comunidad: combinaciones de práctica y impacto contadas en primera persona, con etiquetas que sitúan cada experiencia.
             </p>
         </header>
 

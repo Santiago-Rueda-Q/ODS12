@@ -11,7 +11,7 @@ class TagSeeder extends Seeder
 {
     public function run(): void
     {
-        foreach (GastronomyTagsCatalog::byType() as $type => $names) {
+        foreach (Ods12TagsCatalog::byType() as $type => $names) {
             foreach ($names as $idx => $name) {
                 $base = Str::slug($name);
                 $slug = $base !== '' ? $base : 'item-'.($idx + 1);

@@ -1,13 +1,13 @@
-# Entre Sabores
+# EcoShare
 
-Red social gastronómica orientada al intercambio cultural (proyecto COIL México–Colombia): publicaciones con etiquetas, muro con exploración y modo «siguiendo», likes, comentarios en hilos, perfiles públicos, notificaciones y **análisis de maridaje asistido por IA** (opcional según configuración de API). La documentación técnica está centralizada y enlazada desde **[DOCUMENTACION.md](DOCUMENTACION.md)** y los demás `.md` del repositorio (arquitectura, backend, frontend, Docker, seguridad, etc.).
+Red social sostenible orientada al intercambio cultural (proyecto COIL México–Colombia): publicaciones con etiquetas, muro con exploración y modo «siguiendo», likes, comentarios en hilos, perfiles públicos, notificaciones y **análisis de EcoAnálisis asistido por IA** (opcional según configuración de API). La documentación técnica está centralizada y enlazada desde **[DOCUMENTACION.md](DOCUMENTACION.md)** y los demás `.md` del repositorio (arquitectura, backend, frontend, Docker, seguridad, etc.).
 
 ## Feed del muro (lectura rápida)
 
 | En la UI | Parámetro HTTP | Comportamiento backend (resumen) |
 |----------|----------------|----------------------------------|
 | **FYP** / **Siguiendo** | `following` ausente vs `following=1` | Fuente: exploración global vs solo cuentas que sigues (invitado en «Siguiendo» ve mensaje de login). Detalle en [ARCHITECTURE.md](ARCHITECTURE.md#feed-del-muro-wallfeedservice). |
-| **Recientes** / **Populares** / **Tendencia** | `sort=recent` \| `popular` \| `trending` | Orden y reglas de ranking; con usuario autenticado en FYP y **Recientes**, aplica la **mezcla ~70 % seguidos + ~30 % global por engagement** si tiene seguidos. En **Populares** / **Tendencia**, si existe `ai_analysis.score`, el ranking puede ponderar engagement + maridaje (véase [ARCHITECTURE.md](ARCHITECTURE.md)). |
+| **Recientes** / **Populares** / **Tendencia** | `sort=recent` \| `popular` \| `trending` | Orden y reglas de ranking; con usuario autenticado en FYP y **Recientes**, aplica la **mezcla ~70 % seguidos + ~30 % global por engagement** si tiene seguidos. En **Populares** / **Tendencia**, si existe `ai_analysis.score`, el ranking puede ponderar engagement + EcoAnálisis (véase [ARCHITECTURE.md](ARCHITECTURE.md)). |
 
 Los nombres de chips no coinciden literalmente con los valores de `sort` (son etiquetas de producto). El contrato de API sigue siendo **`sort` en inglés**.
 
@@ -34,7 +34,7 @@ Los nombres de chips no coinciden literalmente con los valores de `sort` (son et
 | Documento | Contenido |
 |-----------|-----------|
 | [DOCUMENTACION.md](DOCUMENTACION.md) | **Guía técnica integral** (arquitectura, flujo IA, colas, modelo de datos, UX, broadcasting, buenas prácticas) — lectura recomendada para entrega o revisión académica |
-| [ARCHITECTURE.md](ARCHITECTURE.md) | Decisiones de arquitectura, **WallFeedService**, feed 70/30, **IA maridaje**, broadcasting |
+| [ARCHITECTURE.md](ARCHITECTURE.md) | Decisiones de arquitectura, **WallFeedService**, feed 70/30, **IA EcoAnálisis**, broadcasting |
 | [BACKEND.md](BACKEND.md) | Requests, servicios, policies, rate limiting, jobs y broadcasting |
 | [FRONTEND.md](FRONTEND.md) | Vite, módulos UI (`resources/js/ui/`), Echo, muro (`wall.js`), CSP |
 | [DATABASE.md](DATABASE.md) | Tablas (`posts.status`, `analysis_status`, `analysis_result`, `moderation_reason`, `ai_analysis`, soft deletes), migraciones |
@@ -69,7 +69,7 @@ Script Composer útil: `composer setup` (instala dependencias, migraciones, buil
 ## Moderación automática (IA)
 
 - Al crear/editar un post, el registro entra en `status=pending` y `analysis_status=pending`.
-- Se encola el job de moderación (`AnalyzePostJob`) y, en paralelo, el análisis de maridaje (`GeneratePostAnalysisJob`).
+- Se encola el job de moderación (`AnalyzePostJob`) y, en paralelo, el análisis de EcoAnálisis (`GeneratePostAnalysisJob`).
 - Si la moderación marca `flagged=true`, el post pasa a `rejected`, guarda `moderation_reason`/`analysis_result` y se aplica soft delete.
 - Si pasa moderación, el post queda `active` con `analysis_status=completed`.
 - Frontend (Blade + Axios) muestra estado **“Analizando contenido…”** y actualiza por WebSocket cuando termina.
@@ -86,4 +86,4 @@ Desarrollo con PHP, Nginx, MySQL, phpMyAdmin y Redis: consulta [DOCKER.md](DOCKE
 
 ## Licencia
 
-MIT (plantilla Laravel); el contenido específico del proyecto Entre Sabores pertenece al equipo del proyecto según los acuerdos académicos aplicables.
+MIT (plantilla Laravel); el contenido específico del proyecto EcoShare pertenece al equipo del proyecto según los acuerdos académicos aplicables.

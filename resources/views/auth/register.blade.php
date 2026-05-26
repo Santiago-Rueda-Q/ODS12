@@ -1,9 +1,9 @@
-<x-guest-layout title="Registrar usuario | Entre Sabores">
+<x-guest-layout title="Registrar usuario | EcoShare">
     <div class="mb-5">
         <h1 class="text-4xl font-extrabold text-white leading-tight">
             Crea tu cuenta
         </h1>
-        <p class="mt-2 text-sm text-slate-400">Únete a la comunidad gastronómica.</p>
+        <p class="mt-2 text-sm text-slate-400">Únete a la comunidad sostenible.</p>
     </div>
 
     @php
@@ -27,6 +27,19 @@
                     <input id="last_name" class="w-full px-3 py-2.5 text-sm rounded-lg bg-white/10 border border-white/20 text-white focus:outline-none focus:ring-2 focus:ring-green-400" type="text" name="last_name" value="{{ old('last_name') }}" required autocomplete="family-name" />
                     <p id="last_name_client_error" class="mt-2 hidden rounded-lg border border-rose-400/30 bg-rose-500/10 px-3 py-2 text-sm text-rose-200"></p>
                     <x-input-error :messages="$errors->get('last_name')" class="mt-2 text-sm" />
+            </div>
+
+            <div class="grid grid-cols-2 gap-3">
+                <div>
+                    <label for="eco_username" class="mb-2 block text-sm font-semibold text-slate-100">Nombre de Usuario (Opcional)</label>
+                    <input id="eco_username" class="w-full px-3 py-2.5 text-sm rounded-lg bg-white/10 border border-white/20 text-white focus:outline-none focus:ring-2 focus:ring-green-400" type="text" name="eco_username" value="{{ old('eco_username') }}" placeholder="Auto-generado si vacío" />
+                    <x-input-error :messages="$errors->get('eco_username')" class="mt-2 text-sm" />
+                </div>
+
+                <div>
+                    <label for="linkedin" class="mb-2 block text-sm font-semibold text-slate-100">LinkedIn (Opcional)</label>
+                    <input id="linkedin" class="w-full px-3 py-2.5 text-sm rounded-lg bg-white/10 border border-white/20 text-white focus:outline-none focus:ring-2 focus:ring-green-400" type="text" name="linkedin" value="{{ old('linkedin') }}" placeholder="usuario-linkedin" />
+                    <x-input-error :messages="$errors->get('linkedin')" class="mt-2 text-sm" />
                 </div>
             </div>
 

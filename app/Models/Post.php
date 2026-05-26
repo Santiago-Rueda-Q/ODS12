@@ -38,14 +38,15 @@ class Post extends Model
         'title',
         'description',
         'content',
-        'food',
-        'drink',
+        'impacto_estimado',
+        'eco_score',
         'image_path',
         'status',
         'analysis_status',
         'analysis_result',
         'moderation_reason',
         'ai_analysis',
+        'eco_analysis',
     ];
 
     protected function casts(): array
@@ -54,6 +55,7 @@ class Post extends Model
             'moderation_reason' => 'array',
             'analysis_result' => 'array',
             'ai_analysis' => 'array',
+            'eco_analysis' => 'array',
         ];
     }
 

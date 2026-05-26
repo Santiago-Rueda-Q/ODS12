@@ -22,13 +22,13 @@ class PostStoreTest extends TestCase
         $this->assertNotEmpty($tagIds);
 
         $response = $this->actingAs($user)->postJson(route('posts.store'), [
-            'title' => 'Maridaje de prueba',
+            'title' => 'EcoAnálisis de prueba',
             'description' => 'Descripción con detalle.',
             'tags' => $tagIds,
         ]);
 
         $response->assertCreated()
-            ->assertJsonPath('post.title', 'Maridaje de prueba')
+            ->assertJsonPath('post.title', 'EcoAnálisis de prueba')
             ->assertJsonPath('post.status', Post::STATUS_ACTIVE);
     }
 

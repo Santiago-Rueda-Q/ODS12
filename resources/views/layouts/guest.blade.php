@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>{{ $title ?? config('app.name', 'Entre Sabores') }}</title>
+        <title>{{ $title ?? config('app.name', 'EcoShare') }}</title>
         <link rel="icon" type="image/png" href="{{ asset('favicon.png') }}">
 
         @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -18,7 +18,7 @@
                         <a href="/" class="mb-6 sm:mb-8 inline-flex items-center gap-3">
                             <img
                                 src="{{ asset('favicon.png') }}"
-                                alt="Logo Entre Sabores"
+                                alt="Logo EcoShare"
                                 class="h-10 w-10 object-contain"
                             >
                             <h1 class="text-xl font-bold text-white tracking-wide">
@@ -33,7 +33,7 @@
                     <div class="relative z-10 flex items-center justify-center w-full">
                         <img
                             src="{{ asset('images/hero-gallery.png') }}"
-                            alt="Entre Sabores"
+                            alt="EcoShare"
                             class="w-[520px] xl:w-[650px] 2xl:w-[750px] object-contain scale-110 drop-shadow-2xl"
                         >
                     </div>

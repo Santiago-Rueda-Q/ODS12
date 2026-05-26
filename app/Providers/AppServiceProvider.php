@@ -70,7 +70,7 @@ class AppServiceProvider extends ServiceProvider
             return Limit::perMinute(30)->by((string) $request->user()->getAuthIdentifier());
         });
 
-        RateLimiter::for('maridaje-reanalyze', function (Request $request): Limit {
+        RateLimiter::for('eco-reanalyze', function (Request $request): Limit {
             return Limit::perMinute(8)->by((string) $request->user()->getAuthIdentifier());
         });
 

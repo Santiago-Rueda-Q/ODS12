@@ -24,8 +24,8 @@ class PostFactory extends Factory
             'title' => fake()->sentence(4),
             'description' => fake()->paragraphs(3, true),
             'content' => fake()->paragraphs(3, true),
-            'food' => fake()->randomElement(['Tacos', 'Arepa', 'Empanada', 'Ceviche']),
-            'drink' => fake()->randomElement(['Café', 'Agua panela', 'Vino', 'Chocolate']),
+            'impacto_estimado' => fake()->sentence(),
+            'eco_score' => fake()->numberBetween(1, 10),
             'image_path' => null,
             'status' => Post::STATUS_ACTIVE,
             'analysis_status' => Post::ANALYSIS_STATUS_COMPLETED,
@@ -38,16 +38,12 @@ class PostFactory extends Factory
     {
         return $this->afterCreating(function (Post $post): void {
             $country = Tag::query()->where('type', Tag::TYPE_COUNTRY)->inRandomOrder()->first();
-            $food = Tag::query()->where('type', Tag::TYPE_FOOD_TYPE)->inRandomOrder()->first();
-            $experience = Tag::query()->where('type', Tag::TYPE_EXPERIENCE)->inRandomOrder()->first();
-            $drink = Tag::query()->where('type', Tag::TYPE_DRINK)->inRandomOrder()->first();
+            $ods12 = Tag::query()->where('type', Tag::TYPE_ODS12)->inRandomOrder()->take(2)->get();
 
-            $ids = array_filter([
-                $country?->id,
-                $food?->id,
-                $experience?->id,
-                $drink?->id,
-            ]);
+            $ids = collect([$country?->id])
+                ->merge($ods12->pluck('id'))
+                ->filter()
+                ->toArray();
 
             if ($ids !== []) {
                 $post->tags()->sync($ids);

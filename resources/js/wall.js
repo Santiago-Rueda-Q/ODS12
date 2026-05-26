@@ -11,10 +11,10 @@ import {
 } from './social/postCard.js';
 import { renderCommentsTreeHtml, setupCommentInteractions } from './social/commentThread.js';
 import {
-    bindMaridajeFlip,
-    buildMaridajeFrontInteractionBar,
+    bindEcoAnálisisFlip,
+    buildEcoAnálisisFrontInteractionBar,
     buildWallModalFlipHtml,
-} from './social/maridajeFlip.js';
+} from './social/EcoAnálisisFlip.js';
 
 const CLS = {
     secondary:
@@ -1050,12 +1050,12 @@ export function initWall() {
 
             const modalLiked = p.liked === true;
             const modalLikesCount = p.likes_count ?? 0;
-            const canReanalyzeMaridaje =
+            const canReanalyzeEcoAnálisis =
                 config.isAuthenticated === true &&
                 config.authUserId != null &&
                 Number(config.authUserId) === Number(p.user?.id);
 
-            const interactionBarHtml = buildMaridajeFrontInteractionBar(
+            const interactionBarHtml = buildEcoAnálisisFrontInteractionBar(
                 buildInteractionStatsHtml(
                     {
                         ...p,
@@ -1078,7 +1078,7 @@ export function initWall() {
                         descriptionStoryHtml: formatStory(p.description),
                         interactionBarHtml,
                         aiAnalysis: p.ai_analysis ?? null,
-                        canReanalyze: canReanalyzeMaridaje,
+                        canReanalyze: canReanalyzeEcoAnálisis,
                     })}
                     <div>
                         <h3 class="font-semibold text-slate-200 mb-2">Comentarios</h3>
@@ -1090,13 +1090,13 @@ export function initWall() {
 
             modalFlipCleanup?.();
             modalFlipCleanup = null;
-            const flipRoot = modalBody.querySelector('[data-maridaje-flip-root]');
+            const flipRoot = modalBody.querySelector('[data-EcoAnálisis-flip-root]');
             if (flipRoot) {
-                modalFlipCleanup = bindMaridajeFlip(flipRoot, {
+                modalFlipCleanup = bindEcoAnálisisFlip(flipRoot, {
                     postId: Number(p.id),
                     axios,
                     reanalyzeUrl: `${String(config.postBaseUrl).replace(/\/$/, '')}/${p.id}/reanalyze`,
-                    canReanalyze: canReanalyzeMaridaje,
+                    canReanalyze: canReanalyzeEcoAnálisis,
                     initialAnalysis: p.ai_analysis ?? null,
                     onNotify: (msg, variant) => showToast(msg, variant ?? 'info'),
                 });

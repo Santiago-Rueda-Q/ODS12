@@ -34,8 +34,8 @@
 
 - **Inicialización:** `resources/js/echo.js`. Crea Echo solo si existe **`VITE_REVERB_APP_KEY`** (o fallback **`VITE_PUSHER_APP_KEY`** para Pusher/Soketi).
 - Variables típicas en `.env` / build: `VITE_REVERB_*` alineadas con **`REVERB_APP_KEY`**, host y puerto del servidor WebSocket (en Docker suele usarse el puerto publicado **9090** directamente; Nginx puede hacer proxy de `/app` y `/apps` al proceso Reverb — véase [DOCKER.md](DOCKER.md)).
-- **Detalle de post** (`post-show.js`): canal `post.{id}`, evento `.post.analysis.generated` para actualizar el análisis de maridaje sin polling; likes/comentarios según payloads existentes.
-- **Muro** (`wall.js` / `maridajeFlip.js`): tarjeta de maridaje con estado controlado por JS (flip, reanalizar); Echo opcional si broadcasting está activo.
+- **Detalle de post** (`post-show.js`): canal `post.{id}`, evento `.post.analysis.generated` para actualizar el análisis de EcoAnálisis sin polling; likes/comentarios según payloads existentes.
+- **Muro** (`wall.js` / `EcoAnálisisFlip.js`): tarjeta de EcoAnálisis con estado controlado por JS (flip, reanalizar); Echo opcional si broadcasting está activo.
 - **Notificaciones** (`notificationsNav.js`): `Echo.private('user.{id}')` y `.notification.created`; panel del dropdown gestionado en JS (sin Alpine); `Echo.leave` en `beforeunload`.
 
 ## Muro (`wall.js`) — estado del feed

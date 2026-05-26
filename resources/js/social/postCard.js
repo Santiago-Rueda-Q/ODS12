@@ -175,8 +175,8 @@ export function renderCard(post, options = {}) {
 
     const grad = gradientClassForPostId(post.id);
     const highlightBadge =
-        post.maridaje_highlighted === true
-            ? `<span class="pointer-events-none absolute right-2 top-2 z-10 rounded-full bg-amber-500/15 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-amber-200 ring-1 ring-amber-400/40 shadow-sm shadow-black/40" title="Maridaje destacado">🔥 Destacado</span>`
+        post.EcoAnálisis_highlighted === true
+            ? `<span class="pointer-events-none absolute right-2 top-2 z-10 rounded-full bg-amber-500/15 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-amber-200 ring-1 ring-amber-400/40 shadow-sm shadow-black/40" title="EcoAnálisis destacado">🔥 Destacado</span>`
             : '';
 
     const headerHtml = post.image_url

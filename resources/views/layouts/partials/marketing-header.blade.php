@@ -13,7 +13,7 @@
     <div class="mx-auto flex w-full max-w-[1400px] flex-wrap items-center gap-x-3 gap-y-3 px-4 py-3.5 sm:flex-nowrap sm:gap-6 sm:px-6 sm:py-4 md:px-8">
         <a
             href="{{ route('welcome') }}"
-            aria-label="Entre Sabores, inicio"
+            aria-label="EcoShare, inicio"
             class="flex shrink-0 items-center gap-2.5 whitespace-nowrap rounded-lg outline-none ring-offset-2 ring-offset-slate-950 transition-opacity hover:opacity-95 focus-visible:ring-2 focus-visible:ring-cyan-400/40 sm:gap-3"
         >
             <img
@@ -23,7 +23,7 @@
                 height="40"
                 class="h-9 w-9 object-contain sm:h-10 sm:w-10"
             >
-            <span class="hidden text-lg font-extrabold tracking-tight text-white sm:inline">Entre Sabores</span>
+            <span class="hidden text-lg font-extrabold tracking-tight text-white sm:inline">EcoShare</span>
         </a>
 
         <nav

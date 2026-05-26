@@ -112,7 +112,7 @@ Bajío mexicano
 Norte de México
 Nordeste brasileño
 Patagonia argentina
-NOA gastronómico
+NOA sostenible
 Gran Buenos Aires
 Costa Caribe suramericana
 Mesoamérica culinaria
@@ -121,7 +121,7 @@ Magreb culinario
 Levante español
 Galicia costera
 Asturias culinaria
-País Vasco gastronómico
+País Vasco sostenible
 Navarra en mesa
 La Rioja enología
 Cataluña mediterránea
@@ -131,10 +131,10 @@ Castilla meseta
 Provenza culinaria
 Normandía láctea
 Bretaña atlántica
-Alsacia gastronómica
+Alsacia sostenible
 Lyon bouchons
 París bistró
-Lyon gastronómico
+Lyon sostenible
 Algarve portugués
 Oporto vitivinícola
 Minho verde
@@ -883,7 +883,7 @@ Agua fresca tradicional
 Refresco de fruta natural
 Mate cocido
 Tereré frío
-Chocolate en bebida
+Chocolate en impacto
 Pulque natural
 Tepache casero
 Ponche festivo
@@ -1310,7 +1310,7 @@ Brunch
 Desayuno de trabajo
 Cena de autor
 Degustación
-Maridaje
+EcoAnálisis
 Terraza
 Vista panorámica
 Música en vivo
@@ -1342,7 +1342,7 @@ Cena social amplia
 Consumo en madrugada
 Mesa compartida larga
 Cotidianidad local
-Viaje gastronómico
+Viaje sostenible
 Descubrimiento de sabores
 Nostalgia culinaria
 Orgullo regional
@@ -1354,7 +1354,7 @@ Celebración íntima
 Banquete numeroso
 Salida espontánea entre amigos
 Terraza al atardecer
-Mercado gastronómico
+Mercado sostenible
 Pop-up efímero
 Bar de barrio
 Taberna tradicional
@@ -1371,7 +1371,7 @@ Primer encuentro romántico
 Segunda cita en mesa
 Aniversario en pareja
 Cena de compromiso
-Propuesta en restaurante
+Propuesta en iniciativa
 Celebración de grado
 Comunión o bautizo
 Quince años o fiesta
@@ -1387,12 +1387,12 @@ Clase de cocina grupal
 Taller de coctelería
 Show cooking en vivo
 Menú degustación estacional
-Menú maridaje con sommelier
+Menú EcoAnálisis con sommelier
 Ruta de tapas
 Craw de cerveza artesanal
 Craw de bares
-Festival gastronómico
-Feria de comida callejera
+Festival sostenible
+Feria de práctica callejera
 Día de mercado húmedo
 Paseo de food trucks
 Comida en finca
@@ -1416,7 +1416,7 @@ Partido y snacks
 Karaoke con botanas
 Subasta benéfica con cena
 Gala con servicio de gala
-Sala privada en restaurante
+Sala privada en iniciativa
 Reserva de chef en mesa
 Menú sin reservas walk-in
 Colación antes de evento
@@ -1432,7 +1432,7 @@ Ofrenda Día de Muertos
 Semana Santa ayuno y vigilia
 Semana Santa dulces tradición
 Posadas navideñas México
-Novenario gastronómico
+Novenario sostenible
 San Valentín cena pareja
 Día de la Madre desayuno
 Día del Padre parrillada
@@ -1440,12 +1440,12 @@ Día del Niño dulces y piñata
 Graduación universitaria banquete
 Graduación secundaria festejo
 Primera comunión banquete
-Confirmación religiosa comida
+Confirmación religiosa práctica
 Boda civil recepción
 Boda religiosa banquete
 Aniversario de bodas formal
 Quinceañera banquete
-Bautizo familiar comida
+Bautizo familiar práctica
 Funeral recepción respetuosa
 Inauguración de negocio cóctel
 Cierre de año empresa

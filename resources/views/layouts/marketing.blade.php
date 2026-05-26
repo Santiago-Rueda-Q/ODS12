@@ -3,8 +3,8 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>@yield('title', 'Entre Sabores')</title>
-    <meta name="description" content="@yield('meta_description', 'Entre Sabores — maridajes, cultura y comunidad gastronómica.')">
+    <title>@yield('title', 'EcoShare')</title>
+    <meta name="description" content="@yield('meta_description', 'EcoShare — EcoAnálisiss, cultura y comunidad sostenible.')">
     <link rel="icon" type="image/png" href="{{ asset('favicon.png') }}">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
@@ -17,7 +17,7 @@
         </main>
 
         <footer class="relative z-10 border-t border-white/10 py-8 text-center text-sm text-slate-500">
-            <p>&copy; {{ date('Y') }} Entre Sabores · <a href="{{ route('welcome') }}" class="text-slate-400 underline-offset-2 hover:text-cyan-300 hover:underline">Inicio</a></p>
+            <p>&copy; {{ date('Y') }} EcoShare · <a href="{{ route('welcome') }}" class="text-slate-400 underline-offset-2 hover:text-cyan-300 hover:underline">Inicio</a></p>
         </footer>
     </div>
 </body>
