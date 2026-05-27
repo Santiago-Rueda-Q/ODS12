@@ -14,7 +14,7 @@ import {
     bindEcoAnálisisFlip,
     buildEcoAnálisisFrontInteractionBar,
     buildWallModalFlipHtml,
-} from './social/EcoAnálisisFlip.js';
+} from './social/maridajeFlip.js';
 
 const CLS = {
     secondary:

@@ -1,7 +1,7 @@
 import { ensureEcho } from './echo.js';
 import { resetAppChromeState } from './ui/appChromeReset.js';
 import { renderCard, heartSvgHtml, flashLikeAnimation } from './social/postCard.js';
-import { mountPostShowEcoAnálisisFlip } from './social/EcoAnálisisFlip.js';
+import { mountPostShowEcoAnálisisFlip } from './social/maridajeFlip.js';
 import {
     renderCommentsTreeHtml,
     setupCommentInteractions,
