@@ -8,8 +8,8 @@
     @include('errors.partials.http-card', [
         'code' => '500',
         'badge' => 'Servicio',
-        'title' => 'Esta combinación no salió como esperábamos',
-        'message' => 'Algo falló en nuestra cocina digital y ya lo estamos corrigiendo. Vuelve a intentar dentro de un momento.',
+        'title' => 'Nuestros servidores necesitan un respiro',
+        'message' => 'Ocurrió un problema inesperado en el sistema. Ya estamos trabajando para solucionarlo y que puedas seguir compartiendo tu impacto positivo.',
         'severity' => 'critical',
     ])
 @endsection
