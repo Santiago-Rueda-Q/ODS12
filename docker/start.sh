@@ -82,7 +82,9 @@ if [ -f artisan ]; then
     php artisan db:seed --force
   fi
 
-  php artisan storage:link --force >/dev/null 2>&1 || true
+  echo "[start] Recreando enlace simbolico de storage de forma segura..."
+  rm -rf public/storage 2>/dev/null || true
+  php artisan storage:link --force
 fi
 
 echo "[start] App lista. Iniciando supervisor..."
