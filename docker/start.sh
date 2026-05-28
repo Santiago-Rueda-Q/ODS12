@@ -19,6 +19,9 @@ echo "[start] Configurando permisos..."
 chmod -R 775 database storage bootstrap/cache 2>/dev/null || true
 chown -R www-data:www-data database storage bootstrap/cache 2>/dev/null || true
 
+# Forzar permisos 777 en el directorio público por si el volumen de CapRover pertenece a root
+chmod -R 777 storage/app/public 2>/dev/null || true
+
 if [ -f package.json ]; then
   NEED_ASSETS=0
   if [ ! -f public/build/manifest.json ]; then

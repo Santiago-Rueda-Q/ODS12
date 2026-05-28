@@ -178,7 +178,8 @@ class User extends Authenticatable
                 return '/images/default.png';
             }
 
-            return '/storage/'.ltrim($normalized, '/');
+            $timestamp = $this->updated_at?->timestamp ?? time();
+            return '/storage/'.ltrim($normalized, '/').'?v='.$timestamp;
         });
     }
 
@@ -224,7 +225,8 @@ class User extends Authenticatable
             return null;
         }
 
-        return '/storage/'.ltrim($relative, '/');
+        $timestamp = $this->updated_at?->timestamp ?? time();
+        return '/storage/'.ltrim($relative, '/').'?v='.$timestamp;
     }
 
     /**

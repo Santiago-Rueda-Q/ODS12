@@ -62,9 +62,13 @@ class Post extends Model
     protected function imageUrl(): Attribute
     {
         return Attribute::make(
-            get: fn () => $this->image_path !== null
-                ? Storage::disk('public')->url($this->image_path)
-                : null,
+            get: function () {
+                if ($this->image_path === null) {
+                    return null;
+                }
+                $timestamp = $this->updated_at?->timestamp ?? time();
+                return Storage::disk('public')->url($this->image_path).'?v='.$timestamp;
+            }
         );
     }
 
