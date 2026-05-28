@@ -136,12 +136,16 @@ function initAvatarCropperInstance(config) {
         if (stepToShow === 1) {
             step2.classList.add('hidden');
             step1.classList.remove('hidden');
+            step1.removeAttribute('wfd-invisible');
+            step1.querySelectorAll('[wfd-invisible]').forEach(el => el.removeAttribute('wfd-invisible'));
 
             return;
         }
 
         step1.classList.add('hidden');
         step2.classList.remove('hidden');
+        step2.removeAttribute('wfd-invisible');
+        step2.querySelectorAll('[wfd-invisible]').forEach(el => el.removeAttribute('wfd-invisible'));
     };
 
     const validateFieldGroup = (fields) => {

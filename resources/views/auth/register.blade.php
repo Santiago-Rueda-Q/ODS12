@@ -27,6 +27,7 @@
                     <input id="last_name" class="w-full px-3 py-2.5 text-sm rounded-lg bg-white/10 border border-white/20 text-white focus:outline-none focus:ring-2 focus:ring-green-400" type="text" name="last_name" value="{{ old('last_name') }}" required autocomplete="family-name" />
                     <p id="last_name_client_error" class="mt-2 hidden rounded-lg border border-rose-400/30 bg-rose-500/10 px-3 py-2 text-sm text-rose-200"></p>
                     <x-input-error :messages="$errors->get('last_name')" class="mt-2 text-sm" />
+                </div>
             </div>
 
             <div class="grid grid-cols-2 gap-3">

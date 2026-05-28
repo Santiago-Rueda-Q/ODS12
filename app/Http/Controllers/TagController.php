@@ -31,17 +31,20 @@ class TagController extends Controller
     public function search(Request $request): JsonResponse
     {
         $q = trim((string) $request->query('q', ''));
-        if ($q === '' || mb_strlen($q) > 80) {
+        if (mb_strlen($q) > 80) {
             return response()->json(['tags' => []]);
         }
 
-        $like = '%'.addcslashes($q, '%_\\').'%';
+        $query = Tag::query()->limit(50);
 
-        $tags = Tag::query()
-            ->where('name', 'LIKE', $like)
-            ->orderBy('name')
-            ->limit(10)
-            ->get(['id', 'name', 'slug', 'type']);
+        if ($q === '') {
+            $query->orderBy('sort_order')->orderBy('name');
+        } else {
+            $like = '%'.addcslashes($q, '%_\\').'%';
+            $query->where('name', 'LIKE', $like)->orderBy('name');
+        }
+
+        $tags = $query->get(['id', 'name', 'slug', 'type']);
 
         return response()->json([
             'tags' => $tags->map(fn (Tag $t) => [

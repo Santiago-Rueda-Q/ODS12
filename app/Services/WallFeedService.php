@@ -45,7 +45,7 @@ class WallFeedService
 
     public function respond(FilterPostsRequest $request): JsonResponse
     {
-        $perPage = min(max(1, $request->integer('per_page', 12)), 30);
+        $perPage = min(max(1, $request->integer('per_page', 20)), 50);
         $page = max(1, $request->integer('page', 1));
         $sort = $request->input('sort', 'recent');
 

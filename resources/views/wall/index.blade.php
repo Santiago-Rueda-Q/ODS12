@@ -304,7 +304,7 @@
                                 role="textbox"
                                 aria-multiline="true"
                                 aria-label="Descripción"
-                                data-placeholder="Describe el plato, la impacto o la experiencia que quieres compartir"
+                                data-placeholder="Describe el producto, el lugar, la iniciativa o la experiencia que quieres compartir"
                                 class="create-post-ce create-post-ce--body ce-empty min-h-[6.5rem] text-[15px] leading-relaxed text-zinc-300 outline-none focus-visible:ring-2 focus-visible:ring-emerald-500/35 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-950 rounded-xl"
                             ></div>
 

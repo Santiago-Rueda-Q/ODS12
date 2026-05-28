@@ -12,8 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('eco_username')->unique()->nullable()->after('username');
-            $table->string('linkedin')->nullable()->after('email');
+            if (!Schema::hasColumn('users', 'eco_username')) {
+                $table->string('eco_username')->unique()->nullable()->after('username');
+            }
             if (Schema::hasColumn('users', 'instagram')) {
                 $table->dropColumn('instagram');
             }
@@ -27,7 +28,7 @@ return new class extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->string('instagram')->nullable();
-            $table->dropColumn(['eco_username', 'linkedin']);
+            $table->dropColumn('eco_username');
         });
     }
 };

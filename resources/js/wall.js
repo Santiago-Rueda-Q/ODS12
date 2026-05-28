@@ -148,7 +148,7 @@ export function initWall() {
     let activeRequestController = null;
     const pagination = {
         page: 1,
-        perPage: 12,
+        perPage: 20,
         hasMore: true,
         loadingMore: false,
     };
@@ -428,6 +428,8 @@ export function initWall() {
         window.requestAnimationFrame(() => {
             tagInput?.focus();
             runSmartHintsFromContent();
+            // Load default tag suggestions immediately
+            void runTagSearchQuery();
         });
     }
 
@@ -452,9 +454,13 @@ export function initWall() {
     async function runTagSearchQuery() {
         const q = (tagInput?.value || '').trim();
         tagSearchAbort?.abort();
-        if (!config.tagsSearchUrl || q.length < 1) {
+        if (!config.tagsSearchUrl) {
             hideTagDropdown();
-
+            return;
+        }
+        // Allow empty query — backend returns popular tags
+        if (q.length > 80) {
+            hideTagDropdown();
             return;
         }
 
@@ -516,9 +522,8 @@ export function initWall() {
     });
 
     tagInput?.addEventListener('focus', () => {
-        if ((tagInput.value || '').trim().length > 0) {
-            void runTagSearchQuery();
-        }
+        // Always show suggestions on focus (empty = popular defaults)
+        void runTagSearchQuery();
     });
 
     tagInput?.addEventListener('keydown', (e) => {
@@ -1067,19 +1072,64 @@ export function initWall() {
                 ),
             );
 
+            const aiAnalysisSlotHtml = (() => {
+                const a = p.ai_analysis;
+                if (!a || typeof a !== 'object') {
+                    return `<div class="flex flex-col items-center gap-3 py-8 px-4">
+                        <div class="h-9 w-9 rounded-full border-2 border-emerald-500/25 border-t-emerald-400 animate-spin"></div>
+                        <p class="text-center text-sm text-slate-400 animate-pulse">Generando análisis EcoAnálisis…</p>
+                    </div>`;
+                }
+                const score = Math.min(10, Math.max(0, Number(a.score ?? 0)));
+                const labelCls = 'text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-400';
+                const blockCls = 'space-y-1.5 rounded-xl border border-slate-700/50 bg-slate-900/40 px-4 py-3.5';
+                return `<div class="space-y-4 text-sm leading-relaxed text-slate-200">
+                    <header class="flex items-center gap-2 border-b border-slate-700/60 pb-3 font-semibold text-emerald-300">
+                        <svg class="h-4 w-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z"/></svg>
+                        Análisis EcoAnálisis
+                    </header>
+                    ${a.historia ? `<div class="${blockCls}"><p class="${labelCls}">Historia</p><p>${esc(String(a.historia))}</p></div>` : ''}
+                    ${a.afinidad ? `<div class="${blockCls}"><p class="${labelCls}">Afinidad</p><p>${esc(String(a.afinidad))}</p></div>` : ''}
+                    ${a.equilibrio ? `<div class="${blockCls}"><p class="${labelCls}">Equilibrio</p><p>${esc(String(a.equilibrio))}</p></div>` : ''}
+                    ${a.recomendacion ? `<div class="${blockCls}"><p class="${labelCls}">Recomendación</p><p>${esc(String(a.recomendacion))}</p></div>` : ''}
+                    <div class="border-t border-slate-700/60 pt-3">
+                        <p class="${labelCls}">Puntuación</p>
+                        <p class="mt-1 font-semibold text-amber-300">${score} / 10</p>
+                    </div>
+                </div>`;
+            })();
+
             modalBody.innerHTML = `
                 <div class="space-y-4" data-modal-post-id="${p.id}">
-                    ${buildWallModalFlipHtml({
-                        postId: Number(p.id),
-                        heroImg,
-                        userHeaderModal,
-                        tagsLine,
-                        titleHtml: esc(p.title),
-                        descriptionStoryHtml: formatStory(p.description),
-                        interactionBarHtml,
-                        aiAnalysis: p.ai_analysis ?? null,
-                        canReanalyze: canReanalyzeEcoAnálisis,
-                    })}
+                    <div class="rounded-xl border border-slate-700/80 bg-slate-900/60 shadow-inner overflow-hidden">
+                        ${heroImg}
+                        <div class="space-y-3 px-4 py-3">
+                            ${userHeaderModal}
+                            <div>
+                                <h2 class="text-xl font-bold text-slate-50">${esc(p.title)}</h2>
+                                <div class="mt-2 flex flex-wrap gap-2">${tagsLine}</div>
+                            </div>
+                            <div class="text-sm leading-relaxed text-slate-300 whitespace-pre-wrap">${formatStory(p.description)}</div>
+                            ${interactionBarHtml}
+                        </div>
+                    </div>
+
+                    <div class="rounded-xl border border-emerald-900/40 bg-slate-950/95 overflow-hidden">
+                        <div class="flex items-center justify-between gap-2 px-4 py-3 border-b border-slate-700/60">
+                            <span class="text-sm font-semibold text-emerald-300">EcoAnálisis</span>
+                            <div class="flex items-center gap-2">
+                                ${canReanalyzeEcoAnálisis ? `<button type="button" id="modal-reanalyze-btn" class="inline-flex items-center gap-1.5 rounded-full bg-violet-600/90 px-3 py-1.5 text-xs font-semibold text-white shadow-sm transition hover:bg-violet-500"><span>Analizar de nuevo</span></button>` : ''}
+                                <button type="button" id="modal-toggle-analysis" class="inline-flex items-center gap-1.5 rounded-full bg-emerald-600/90 px-3 py-1.5 text-xs font-semibold text-white transition hover:bg-emerald-500">
+                                    <svg class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456zM16.894 20.567L16.5 21.75l-.394-1.183a2.25 2.25 0 00-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 001.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 001.423 1.423l1.183.394-1.183.394a2.25 2.25 0 00-1.423 1.423z"/></svg>
+                                    <span id="modal-toggle-analysis-label">Ver análisis</span>
+                                </button>
+                            </div>
+                        </div>
+                        <div id="modal-analysis-panel" class="hidden px-4 py-4" data-modal-analysis-slot>
+                            ${aiAnalysisSlotHtml}
+                        </div>
+                    </div>
+
                     <div>
                         <h3 class="font-semibold text-slate-200 mb-2">Comentarios</h3>
                         <div id="wall-modal-comments" class="rounded-xl border border-slate-700/60 bg-slate-950/50 p-3 shadow-inner">${commentsHtml}</div>
@@ -1090,15 +1140,37 @@ export function initWall() {
 
             modalFlipCleanup?.();
             modalFlipCleanup = null;
-            const flipRoot = modalBody.querySelector('[data-EcoAnálisis-flip-root]');
-            if (flipRoot) {
-                modalFlipCleanup = bindEcoAnálisisFlip(flipRoot, {
-                    postId: Number(p.id),
-                    axios,
-                    reanalyzeUrl: `${String(config.postBaseUrl).replace(/\/$/, '')}/${p.id}/reanalyze`,
-                    canReanalyze: canReanalyzeEcoAnálisis,
-                    initialAnalysis: p.ai_analysis ?? null,
-                    onNotify: (msg, variant) => showToast(msg, variant ?? 'info'),
+
+            // Toggle análisis expandible
+            const toggleBtn = modalBody.querySelector('#modal-toggle-analysis');
+            const analysisPanel = modalBody.querySelector('#modal-analysis-panel');
+            const toggleLabel = modalBody.querySelector('#modal-toggle-analysis-label');
+            if (toggleBtn && analysisPanel) {
+                toggleBtn.addEventListener('click', () => {
+                    const hidden = analysisPanel.classList.toggle('hidden');
+                    if (toggleLabel) toggleLabel.textContent = hidden ? 'Ver análisis' : 'Ocultar análisis';
+                });
+            }
+
+            // Botón reanalizar
+            const reanalyzeBtn = modalBody.querySelector('#modal-reanalyze-btn');
+            if (reanalyzeBtn && canReanalyzeEcoAnálisis) {
+                reanalyzeBtn.addEventListener('click', async () => {
+                    const slot = modalBody.querySelector('[data-modal-analysis-slot]');
+                    if (slot) {
+                        slot.innerHTML = `<div class="flex flex-col items-center gap-3 py-8">
+                            <div class="h-9 w-9 rounded-full border-2 border-emerald-500/25 border-t-emerald-400 animate-spin"></div>
+                            <p class="text-center text-sm text-slate-400 animate-pulse">Generando nuevo análisis…</p>
+                        </div>`;
+                        if (analysisPanel) analysisPanel.classList.remove('hidden');
+                        if (toggleLabel) toggleLabel.textContent = 'Ocultar análisis';
+                    }
+                    try {
+                        await axios.post(`${String(config.postBaseUrl).replace(/\/$/, '')}/${p.id}/reanalyze`);
+                        showToast('Generando nuevo análisis. Aparecerá en breve.', 'info');
+                    } catch {
+                        showToast('No se pudo iniciar el análisis. Inténtalo de nuevo.', 'error');
+                    }
                 });
             }
 

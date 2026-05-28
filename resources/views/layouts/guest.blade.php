@@ -22,7 +22,7 @@
                                 class="h-10 w-10 object-contain"
                             >
                             <h1 class="text-xl font-bold text-white tracking-wide">
-                                Entre <span class="text-green-400">Sabores</span>
+                                Eco<span class="text-green-400">Share</span>
                             </h1>
                         </a>
                         {{ $slot }}
@@ -32,7 +32,7 @@
                 <aside class="hidden lg:flex items-center justify-center relative min-h-[560px]">
                     <div class="relative z-10 flex items-center justify-center w-full">
                         <img
-                            src="{{ asset('images/hero-gallery.png') }}"
+                            src="{{ asset('images/hero-sustainable.png') }}"
                             alt="EcoShare"
                             class="w-[520px] xl:w-[650px] 2xl:w-[750px] object-contain scale-110 drop-shadow-2xl"
                         >
